@@ -1,0 +1,14 @@
+version: '2'
+services:
+    drzug-app:
+        image: drzug
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://drzug-postgresql:5432/drzug
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+        ports:
+            - 8080:8080
+    drzug-postgresql:
+        extends:
+            file: postgresql.yml
+            service: drzug-postgresql
