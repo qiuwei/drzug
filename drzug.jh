@@ -1,0 +1,86 @@
+entity Product {
+    id Long required,
+    name String required,
+    image ImageBlob,
+    description TextBlob,
+    salePrice Double required,
+    sourcePrice Double required,
+    type ProductType
+}
+
+enum OrderStatus {
+    CANCELLED, LOCKED, DONE, NEW
+}
+
+enum InvoiceStatus {
+    OPEN, PAID
+}
+
+enum ProductType {
+    SERVICE, PRODUCT
+}
+
+entity Invoice {
+    id Long required,
+    createAt ZonedDateTime required,
+    status InvoiceStatus
+}
+
+entity InvoiceEntry {
+}
+
+entity OrderEntry {
+    count Long required
+}
+
+entity Order {
+    createdAt ZonedDateTime required, 
+    status OrderStatus required
+}
+
+entity Storage {
+    name String required,
+    location String required
+}
+
+entity StorageEntry {
+	count Long required
+}
+
+entity Provider {
+    name String required
+}
+
+entity Customer {
+    firstName String required,
+    lastName String required
+}
+
+entity Tax {
+    name String required,
+    rate Double required
+}
+
+relationship OneToMany {
+    Invoice{customer(firstName)} to Customer,
+    Invoice{invoiceEntry} to InvoiceEntry,
+    Order{orderEntry} to OrderEntry,
+    Storage{storeEntry} to StorageEntry{storage(name)}
+}
+
+relationship OneToOne {
+    InvoiceEntry{product(name)} to Product,
+    InvoiceEntry{tax(name)} to Tax,
+    StorageEntry{product(name)} to Product,
+    OrderEntry{product(name)} to Product
+}
+
+relationship ManyToMany {
+	Product{provider(name)} to Provider{product(name)}
+}
+
+service Product, Order, Invoice, Storage with serviceClass
+
+paginate Product, Order, Invoice, Customer, Storage with pagination
+
+angularSuffix * with ngDrzug
