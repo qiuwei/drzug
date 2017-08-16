@@ -84,11 +84,12 @@ entity Tax {
 }
 
 relationship OneToMany {
-    Invoice{customer(firstName)} to Customer,
+    Customer{invoice} to Invoice(customer(firstName));
     Invoice{invoiceItem} to InvoiceItem,
     Order{orderItem} to OrderItem,
     Packet{packetItem} to PacketItem 
 }
+
 
 relationship OneToOne {
     InvoiceItem{product(name)} to Product,
