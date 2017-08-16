@@ -39,10 +39,9 @@ entity Order {
     status OrderStatus required
 }
 
-entity Package {
+entity Packet {
     weight BigDecimal required,
-    destination Storage required,
-    status PackageStatus required 
+    status PacketStatus required 
 }
 
 entity Payment {
@@ -56,11 +55,11 @@ enum Unit {
      EURO
 }
 
-entity PackageItem{
+entity PacketItem{
      count Long required
 }
 
-enum PackageStatus{
+enum PacketStatus{
      NEW,
      SENT,
      ARRIVED
@@ -88,13 +87,14 @@ relationship OneToMany {
     Invoice{customer(firstName)} to Customer,
     Invoice{invoiceItem} to InvoiceItem,
     Order{orderItem} to OrderItem,
-    Package{packageItem} to PackageItem
+    Packet{packetItem} to PacketItem 
 }
 
 relationship OneToOne {
     InvoiceItem{product(name)} to Product,
     InvoiceItem{tax(name)} to Tax,
     OrderItem{product(name)} to Product,
+    Packet{destination(name)} to Storage
 }
 
 relationship ManyToMany {
