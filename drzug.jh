@@ -1,15 +1,14 @@
 entity Product {
-    id Long required,
     name String required,
     image ImageBlob,
     description TextBlob,
-    salePrice Double required,
-    sourcePrice Double required,
+    salePrice BigDecimal,
+    sourcePrice BigDecimal,
     type ProductType
 }
 
 enum OrderStatus {
-    CANCELLED, LOCKED, DONE, NEW
+    CANCELLED, LOCKED, COMPLETED, NEW, INQUIRY
 }
 
 enum InvoiceStatus {
@@ -21,16 +20,18 @@ enum ProductType {
 }
 
 entity Invoice {
-    id Long required,
     createAt ZonedDateTime required,
     status InvoiceStatus
 }
 
-entity InvoiceEntry {
+entity InvoiceItem {
+    count Long required,
+    discount BigDecimal
 }
 
-entity OrderEntry {
-    count Long required
+entity OrderItem{
+    count Long required,
+    discount BigDecimal
 }
 
 entity Order {
@@ -38,13 +39,35 @@ entity Order {
     status OrderStatus required
 }
 
-entity Storage {
-    name String required,
-    location String required
+entity Package {
+    weight BigDecimal required,
+    destination Storage required,
+    status PackageStatus required 
 }
 
-entity StorageEntry {
-	count Long required
+entity Payment {
+    date ZonedDateTime required,
+    amount BigDecimal required, 
+    unit Unit required
+}
+
+enum Unit {
+     CNY,
+     EURO
+}
+
+entity PackageItem{
+     count Long required
+}
+
+enum PackageStatus{
+     NEW,
+     SENT,
+     ARRIVED
+}
+
+entity Storage{
+     name String required,
 }
 
 entity Provider {
@@ -58,29 +81,30 @@ entity Customer {
 
 entity Tax {
     name String required,
-    rate Double required
+    rate BigDecimal required
 }
 
 relationship OneToMany {
     Invoice{customer(firstName)} to Customer,
-    Invoice{invoiceEntry} to InvoiceEntry,
-    Order{orderEntry} to OrderEntry,
-    Storage{storeEntry} to StorageEntry{storage(name)}
+    Invoice{invoiceItem} to InvoiceItem,
+    Order{orderItem} to OrderItem,
+    Package{packageItem} to PackageItem
 }
 
 relationship OneToOne {
-    InvoiceEntry{product(name)} to Product,
-    InvoiceEntry{tax(name)} to Tax,
-    StorageEntry{product(name)} to Product,
-    OrderEntry{product(name)} to Product
+    InvoiceItem{product(name)} to Product,
+    InvoiceItem{tax(name)} to Tax,
+    OrderItem{product(name)} to Product,
 }
 
 relationship ManyToMany {
 	Product{provider(name)} to Provider{product(name)}
 }
 
-service Product, Order, Invoice, Storage with serviceClass
+dto all with mapstruct
 
-paginate Product, Order, Invoice, Customer, Storage with pagination
+service all with serviceImpl
 
-angularSuffix * with ngDrzug
+paginate all with pagination
+
+angularSuffix * with mysuffix
