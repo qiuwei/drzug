@@ -2,9 +2,16 @@ entity Product {
     name String required,
     image ImageBlob,
     description TextBlob,
-    salePrice BigDecimal,
-    sourcePrice BigDecimal,
+    suggestedPrice BigDecimal,
     type ProductType
+}
+
+entity Purchase {
+    createdAt ZonedDateTime required
+}
+
+entity PurchaseItem {
+    count Long required
 }
 
 enum OrderStatus {
@@ -31,7 +38,7 @@ entity InvoiceItem {
 
 entity OrderItem{
     count Long required,
-    discount BigDecimal
+    salePrice BigDecimal
 }
 
 entity Order {
@@ -84,10 +91,11 @@ entity Tax {
 }
 
 relationship OneToMany {
-    Customer{invoice} to Invoice(customer(firstName));
+    Customer{invoice} to Invoice{customer(firstName)},
     Invoice{invoiceItem} to InvoiceItem,
     Order{orderItem} to OrderItem,
-    Packet{packetItem} to PacketItem 
+    Packet{packetItem} to PacketItem,
+    Purchase{purchaseItem} to PurchaseItem
 }
 
 
@@ -95,7 +103,9 @@ relationship OneToOne {
     InvoiceItem{product(name)} to Product,
     InvoiceItem{tax(name)} to Tax,
     OrderItem{product(name)} to Product,
-    Packet{destination(name)} to Storage
+    Packet{destination(name)} to Storage,
+    Product{sourceTax(name)} to Tax,
+    PurchaseItem{product(name)} to Prodcut
 }
 
 relationship ManyToMany {
