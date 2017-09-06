@@ -1,0 +1,22 @@
+{
+    "drzugApp": {
+        "purchase" : {
+            "home": {
+                "title": "Purchases",
+                "createLabel": "Create a new Purchase",
+                "createOrEditLabel": "Create or edit a Purchase"
+            },
+            "created": "A new Purchase is created with identifier {{ param }}",
+            "updated": "A Purchase is updated with identifier {{ param }}",
+            "deleted": "A Purchase is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Purchase {{ id }}?"
+            },
+            "detail": {
+                "title": "Purchase"
+            },
+            "createdAt": "Created At",
+            "purchaseItem": "Purchase Item"
+        }
+    }
+}

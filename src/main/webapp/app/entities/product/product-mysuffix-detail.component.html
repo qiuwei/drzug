@@ -1,0 +1,58 @@
+
+<div *ngIf="product">
+    <h2><span jhiTranslate="drzugApp.product.detail.title">Product</span> {{product.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="drzugApp.product.name">Name</span></dt>
+        <dd>
+            <span>{{product.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.product.image">Image</span></dt>
+        <dd>
+            <div *ngIf="product.image">
+                <a (click)="openFile(product.imageContentType, product.image)">
+                    <img [src]="'data:' + product.imageContentType + ';base64,' + product.image" style="max-width: 100%;" alt="product image"/>
+                </a>
+                {{product.imageContentType}}, {{byteSize(product.image)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.product.description">Description</span></dt>
+        <dd>
+            <span>{{product.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.product.suggestedPrice">Suggested Price</span></dt>
+        <dd>
+            <span>{{product.suggestedPrice}}</span>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.product.type">Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'drzugApp.ProductType.' + product.type}}">{{product.type}}</span>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.product.sourceTax">Source Tax</span></dt>
+        <dd>
+            <div *ngIf="product.sourceTaxId">
+                <a [routerLink]="['/tax-mysuffix', product.sourceTaxId]">{{product.sourceTaxName}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.product.provider">Provider</span></dt>
+        <dd>
+            <span *ngFor="let provider of product.providers; let last = last">
+                <a [routerLink]="['/provider-mysuffix', provider?.id ]">{{provider.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'product-mysuffix/'+ product.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

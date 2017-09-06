@@ -1,0 +1,10 @@
+{
+    "drzugApp": {
+        "PacketStatus" : {
+            "null": "",
+            "NEW": "NEW",
+            "SENT": "SENT",
+            "ARRIVED": "ARRIVED"
+        }
+    }
+}

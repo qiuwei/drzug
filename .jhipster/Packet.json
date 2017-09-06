@@ -1,0 +1,42 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "destination",
+            "otherEntityName": "storage",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "packet"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "packetItem",
+            "otherEntityName": "packetItem",
+            "otherEntityRelationshipName": "packet"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "weight",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "PacketStatus",
+            "fieldValues": "NEW,SENT,ARRIVED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170818143435",
+    "entityTableName": "packet",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "angularJSSuffix": "mysuffix"
+}

@@ -1,0 +1,35 @@
+
+<div *ngIf="packet">
+    <h2><span jhiTranslate="drzugApp.packet.detail.title">Packet</span> {{packet.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="drzugApp.packet.weight">Weight</span></dt>
+        <dd>
+            <span>{{packet.weight}}</span>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.packet.status">Status</span></dt>
+        <dd>
+            <span jhiTranslate="{{'drzugApp.PacketStatus.' + packet.status}}">{{packet.status}}</span>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.packet.destination">Destination</span></dt>
+        <dd>
+            <div *ngIf="packet.destinationId">
+                <a [routerLink]="['/storage-mysuffix', packet.destinationId]">{{packet.destinationName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'packet-mysuffix/'+ packet.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

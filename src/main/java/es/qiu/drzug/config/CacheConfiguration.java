@@ -41,6 +41,27 @@ public class CacheConfiguration {
             cm.createCache(es.qiu.drzug.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(es.qiu.drzug.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             cm.createCache(es.qiu.drzug.domain.SocialUserConnection.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Product.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Product.class.getName() + ".providers", jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Purchase.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Purchase.class.getName() + ".purchaseItems", jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.PurchaseItem.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Invoice.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Invoice.class.getName() + ".invoiceItems", jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.InvoiceItem.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.OrderItem.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Order.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Order.class.getName() + ".orderItems", jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Packet.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Packet.class.getName() + ".packetItems", jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Payment.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.PacketItem.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Storage.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Provider.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Provider.class.getName() + ".products", jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Customer.class.getName(), jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Customer.class.getName() + ".invoices", jcacheConfiguration);
+            cm.createCache(es.qiu.drzug.domain.Tax.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
