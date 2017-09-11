@@ -1,7 +1,9 @@
 package es.qiu.drzug.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import es.qiu.drzug.service.InvoiceItemService;
 import es.qiu.drzug.service.InvoiceService;
+import es.qiu.drzug.service.dto.InvoiceItemDTO;
 import es.qiu.drzug.web.rest.util.HeaderUtil;
 import es.qiu.drzug.web.rest.util.PaginationUtil;
 import es.qiu.drzug.service.dto.InvoiceDTO;
@@ -124,4 +126,5 @@ public class InvoiceResource {
         invoiceService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
 }
