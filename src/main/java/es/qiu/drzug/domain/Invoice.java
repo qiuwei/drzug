@@ -8,9 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 import es.qiu.drzug.domain.enumeration.InvoiceStatus;
 
@@ -39,7 +37,7 @@ public class Invoice implements Serializable {
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<InvoiceItem> invoiceItems = new HashSet<>();
+    private List<InvoiceItem> invoiceItems = new ArrayList<>();
 
     @ManyToOne
     private Customer customer;
@@ -78,11 +76,11 @@ public class Invoice implements Serializable {
         this.status = status;
     }
 
-    public Set<InvoiceItem> getInvoiceItems() {
+    public List<InvoiceItem> getInvoiceItems() {
         return invoiceItems;
     }
 
-    public Invoice invoiceItems(Set<InvoiceItem> invoiceItems) {
+    public Invoice invoiceItems(List<InvoiceItem> invoiceItems) {
         this.invoiceItems = invoiceItems;
         return this;
     }
@@ -99,7 +97,7 @@ public class Invoice implements Serializable {
         return this;
     }
 
-    public void setInvoiceItems(Set<InvoiceItem> invoiceItems) {
+    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
         this.invoiceItems = invoiceItems;
     }
 

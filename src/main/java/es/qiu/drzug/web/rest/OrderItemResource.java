@@ -27,7 +27,7 @@ import java.util.Optional;
  * REST controller for managing OrderItem.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/orders/")
 public class OrderItemResource {
 
     private final Logger log = LoggerFactory.getLogger(OrderItemResource.class);
@@ -47,7 +47,7 @@ public class OrderItemResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new orderItemDTO, or with status 400 (Bad Request) if the orderItem has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/order-items")
+    @PostMapping("{order_id}/order-items")
     @Timed
     public ResponseEntity<OrderItemDTO> createOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO) throws URISyntaxException {
         log.debug("REST request to save OrderItem : {}", orderItemDTO);
@@ -69,7 +69,7 @@ public class OrderItemResource {
      * or with status 500 (Internal Server Error) if the orderItemDTO couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/order-items")
+    @PutMapping("{order_id}/order-items")
     @Timed
     public ResponseEntity<OrderItemDTO> updateOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO) throws URISyntaxException {
         log.debug("REST request to update OrderItem : {}", orderItemDTO);
@@ -88,7 +88,7 @@ public class OrderItemResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of orderItems in body
      */
-    @GetMapping("/order-items")
+    @GetMapping("{order_id}/order-items")
     @Timed
     public ResponseEntity<List<OrderItemDTO>> getAllOrderItems(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of OrderItems");
@@ -103,7 +103,7 @@ public class OrderItemResource {
      * @param id the id of the orderItemDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the orderItemDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/order-items/{id}")
+    @GetMapping("{order_id}/order-items/{id}")
     @Timed
     public ResponseEntity<OrderItemDTO> getOrderItem(@PathVariable Long id) {
         log.debug("REST request to get OrderItem : {}", id);
@@ -117,7 +117,7 @@ public class OrderItemResource {
      * @param id the id of the orderItemDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/order-items/{id}")
+    @DeleteMapping("{order_id}/order-items/{id}")
     @Timed
     public ResponseEntity<Void> deleteOrderItem(@PathVariable Long id) {
         log.debug("REST request to delete OrderItem : {}", id);

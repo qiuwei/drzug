@@ -8,7 +8,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class InvoiceItemMysuffixService {
 
-    private resourceUrl = 'api/invoice-items';
+    private resourceUrl = 'api/invoices/1/invoice-items';
 
     constructor(private http: Http) { }
 

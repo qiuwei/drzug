@@ -27,7 +27,7 @@ import java.util.Optional;
  * REST controller for managing PurchaseItem.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/purchases/")
 public class PurchaseItemResource {
 
     private final Logger log = LoggerFactory.getLogger(PurchaseItemResource.class);
@@ -47,7 +47,7 @@ public class PurchaseItemResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new purchaseItemDTO, or with status 400 (Bad Request) if the purchaseItem has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/purchase-items")
+    @PostMapping("{purchase_id}/purchase-items")
     @Timed
     public ResponseEntity<PurchaseItemDTO> createPurchaseItem(@Valid @RequestBody PurchaseItemDTO purchaseItemDTO) throws URISyntaxException {
         log.debug("REST request to save PurchaseItem : {}", purchaseItemDTO);
@@ -69,7 +69,7 @@ public class PurchaseItemResource {
      * or with status 500 (Internal Server Error) if the purchaseItemDTO couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/purchase-items")
+    @PutMapping("{purchase_id}/purchase-items")
     @Timed
     public ResponseEntity<PurchaseItemDTO> updatePurchaseItem(@Valid @RequestBody PurchaseItemDTO purchaseItemDTO) throws URISyntaxException {
         log.debug("REST request to update PurchaseItem : {}", purchaseItemDTO);
@@ -88,7 +88,7 @@ public class PurchaseItemResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of purchaseItems in body
      */
-    @GetMapping("/purchase-items")
+    @GetMapping("{purchase_id}/purchase-items")
     @Timed
     public ResponseEntity<List<PurchaseItemDTO>> getAllPurchaseItems(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of PurchaseItems");
@@ -103,7 +103,7 @@ public class PurchaseItemResource {
      * @param id the id of the purchaseItemDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the purchaseItemDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/purchase-items/{id}")
+    @GetMapping("{purchase_id}/purchase-items/{id}")
     @Timed
     public ResponseEntity<PurchaseItemDTO> getPurchaseItem(@PathVariable Long id) {
         log.debug("REST request to get PurchaseItem : {}", id);
@@ -117,7 +117,7 @@ public class PurchaseItemResource {
      * @param id the id of the purchaseItemDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/purchase-items/{id}")
+    @DeleteMapping("{purchase_id}/purchase-items/{id}")
     @Timed
     public ResponseEntity<Void> deletePurchaseItem(@PathVariable Long id) {
         log.debug("REST request to delete PurchaseItem : {}", id);
