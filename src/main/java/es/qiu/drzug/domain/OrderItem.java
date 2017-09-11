@@ -31,8 +31,7 @@ public class OrderItem implements Serializable {
     @Column(name = "sale_price", precision=10, scale=2)
     private BigDecimal salePrice;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Product product;
 
     @ManyToOne

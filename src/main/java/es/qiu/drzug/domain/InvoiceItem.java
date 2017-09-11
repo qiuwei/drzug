@@ -1,5 +1,6 @@
 package es.qiu.drzug.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,14 +33,13 @@ public class InvoiceItem implements Serializable {
     private BigDecimal discount;
 
     @ManyToOne
+    @JsonIgnore
     private Invoice invoice;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Product product;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Tax tax;
 
     public Long getId() {
