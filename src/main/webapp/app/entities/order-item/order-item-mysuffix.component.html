@@ -1,0 +1,78 @@
+<div>
+    <h2>
+        <span jhiTranslate="drzugApp.orderItem.home.title">Order Items</span>
+        <button class="btn btn-primary float-right create-order-item-mysuffix" [routerLink]="['/', { outlets: { popup: ['order-item-mysuffix-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="drzugApp.orderItem.home.createLabel">
+            Create new Order Item
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="orderItems">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="count"><span jhiTranslate="drzugApp.orderItem.count">Count</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="salePrice"><span jhiTranslate="drzugApp.orderItem.salePrice">Sale Price</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="productName"><span jhiTranslate="drzugApp.orderItem.product">Product</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="orderId"><span jhiTranslate="drzugApp.orderItem.order">Order</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let orderItem of orderItems ;trackBy: trackId">
+                <td><a [routerLink]="['../order-item-mysuffix', orderItem.id ]">{{orderItem.id}}</a></td>
+                <td>{{orderItem.count}}</td>
+                <td>{{orderItem.salePrice}}</td>
+                <td>
+                    <div *ngIf="orderItem.productId">
+                        <a [routerLink]="['../product-mysuffix', orderItem.productId  ]" >{{orderItem.productName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orderItem.orderId">
+                        <a [routerLink]="['../order-mysuffix', orderItem.orderId  ]" >{{orderItem.orderId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../order-item-mysuffix', orderItem.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'order-item-mysuffix/'+ orderItem.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'order-item-mysuffix/'+ orderItem.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <div *ngIf="orderItems && orderItems.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
+</div>

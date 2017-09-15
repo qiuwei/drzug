@@ -1,0 +1,47 @@
+
+<div *ngIf="invoiceItem">
+    <h2><span jhiTranslate="drzugApp.invoiceItem.detail.title">Invoice Item</span> {{invoiceItem.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="drzugApp.invoiceItem.count">Count</span></dt>
+        <dd>
+            <span>{{invoiceItem.count}}</span>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.invoiceItem.discount">Discount</span></dt>
+        <dd>
+            <span>{{invoiceItem.discount}}</span>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.invoiceItem.invoice">Invoice</span></dt>
+        <dd>
+            <div *ngIf="invoiceItem.invoiceId">
+                <a [routerLink]="['/invoice-mysuffix', invoiceItem.invoiceId]">{{invoiceItem.invoiceId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.invoiceItem.product">Product</span></dt>
+        <dd>
+            <div *ngIf="invoiceItem.productId">
+                <a [routerLink]="['/product-mysuffix', invoiceItem.productId]">{{invoiceItem.productName}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="drzugApp.invoiceItem.tax">Tax</span></dt>
+        <dd>
+            <div *ngIf="invoiceItem.taxId">
+                <a [routerLink]="['/tax-mysuffix', invoiceItem.taxId]">{{invoiceItem.taxName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'invoice-item-mysuffix/'+ invoiceItem.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

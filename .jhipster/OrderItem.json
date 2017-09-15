@@ -1,0 +1,38 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "orderItem"
+        },
+        {
+            "relationshipName": "order",
+            "otherEntityName": "order",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "count",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "salePrice",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "changelogDate": "20170818143433",
+    "entityTableName": "order_item",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "angularJSSuffix": "mysuffix"
+}

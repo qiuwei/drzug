@@ -1,0 +1,11 @@
+version: '2'
+services:
+    drzug-postgresql:
+        image: postgres:9.6.2
+        # volumes:
+        #     - ~/volumes/jhipster/drzug/postgresql/:/var/lib/postgresql/
+        environment:
+            - POSTGRES_USER=drzug
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432

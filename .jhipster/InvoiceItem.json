@@ -1,0 +1,46 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "invoice",
+            "otherEntityName": "invoice",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "invoiceItem"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "tax",
+            "otherEntityName": "tax",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "invoiceItem"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "count",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "discount",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "changelogDate": "20170818143432",
+    "entityTableName": "invoice_item",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "angularJSSuffix": "mysuffix"
+}

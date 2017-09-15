@@ -1,0 +1,87 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myProductLabel" jhiTranslate="drzugApp.product.home.createOrEditLabel">Create or edit a Product</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!product.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="product.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="drzugApp.product.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="product.name"
+            required />
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="drzugApp.product.image" for="field_image">Image</label>
+            <div>
+                <img [src]="'data:' + product.imageContentType + ';base64,' + product.image" style="max-height: 100px;" *ngIf="product.image" alt="product image"/>
+                <div *ngIf="product.image" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{product.imageContentType}}, {{byteSize(product.image)}}</span>
+                    <button type="button" (click)="product.image=null;product.imageContentType=null;"
+                            class="btn btn-default btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" (change)="setFileData($event, product, 'image', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+            </div>
+            <input type="hidden" class="form-control" name="image" id="field_image"
+                [(ngModel)]="product.image"
+             />
+            <input type="hidden" class="form-control" name="imageContentType" id="field_imageContentType"
+                [(ngModel)]="product.imageContentType" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="drzugApp.product.description" for="field_description">Description</label>
+            <textarea class="form-control" name="description" id="field_description"
+                [(ngModel)]="product.description"  ></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="drzugApp.product.suggestedPrice" for="field_suggestedPrice">Suggested Price</label>
+            <input type="number" class="form-control" name="suggestedPrice" id="field_suggestedPrice"
+                [(ngModel)]="product.suggestedPrice"
+             />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="drzugApp.product.type" for="field_type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="product.type" id="field_type" >
+                <option value="SERVICE" jhiTranslate="drzugApp.ProductType.SERVICE">SERVICE</option>
+                <option value="PRODUCT" jhiTranslate="drzugApp.ProductType.PRODUCT">PRODUCT</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="drzugApp.product.sourceTax" for="field_sourceTax">Source Tax</label>
+            <select class="form-control" id="field_sourceTax" name="sourceTax" [(ngModel)]="product.sourceTaxId">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="taxOption.id" *ngFor="let taxOption of sourcetaxes; trackBy: trackTaxById">{{taxOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="drzugApp.product.provider" for="field_provider">Provider</label>
+            <select class="form-control" id="field_provider" multiple name="provider" [(ngModel)]="product.providers">
+                <option [ngValue]="getSelected(product.providers, providerOption)" *ngFor="let providerOption of providers; trackBy: trackProviderById">{{providerOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
