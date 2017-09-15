@@ -32,11 +32,11 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.order.status" for="field_status">Status</label>
             <select class="form-control" name="status" [(ngModel)]="order.status" id="field_status"  required>
-                <option value="CANCELLED" jhiTranslate="drzugApp.OrderStatus.CANCELLED">CANCELLED</option>
-                <option value="LOCKED" jhiTranslate="drzugApp.OrderStatus.LOCKED">LOCKED</option>
-                <option value="COMPLETED" jhiTranslate="drzugApp.OrderStatus.COMPLETED">COMPLETED</option>
-                <option value="NEW" jhiTranslate="drzugApp.OrderStatus.NEW">NEW</option>
-                <option value="INQUIRY" jhiTranslate="drzugApp.OrderStatus.INQUIRY">INQUIRY</option>
+                <option value="CANCELLED">{{'drzugApp.OrderStatus.CANCELLED' | translate}}</option>
+                <option value="LOCKED">{{'drzugApp.OrderStatus.LOCKED' | translate}}</option>
+                <option value="COMPLETED">{{'drzugApp.OrderStatus.COMPLETED' | translate}}</option>
+                <option value="NEW">{{'drzugApp.OrderStatus.NEW' | translate}}</option>
+                <option value="INQUIRY">{{'drzugApp.OrderStatus.INQUIRY' | translate}}</option>
             </select>
             <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
                 <small class="form-text text-danger"
@@ -48,7 +48,7 @@
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

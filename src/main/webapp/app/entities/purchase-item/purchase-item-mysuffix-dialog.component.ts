@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { PurchaseItemMysuffix } from './purchase-item-mysuffix.model';
 import { PurchaseItemMysuffixPopupService } from './purchase-item-mysuffix-popup.service';
@@ -20,7 +20,6 @@ import { ResponseWrapper } from '../../shared';
 export class PurchaseItemMysuffixDialogComponent implements OnInit {
 
     purchaseItem: PurchaseItemMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     purchases: PurchaseMysuffix[];
@@ -29,17 +28,16 @@ export class PurchaseItemMysuffixDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private purchaseItemService: PurchaseItemMysuffixService,
         private purchaseService: PurchaseMysuffixService,
         private productService: ProductMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.purchaseService.query()
             .subscribe((res: ResponseWrapper) => { this.purchases = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.productService
@@ -56,6 +54,7 @@ export class PurchaseItemMysuffixDialogComponent implements OnInit {
                 }
             }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -64,40 +63,29 @@ export class PurchaseItemMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.purchaseItem.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.purchaseItemService.update(this.purchaseItem), false);
+                this.purchaseItemService.update(this.purchaseItem));
         } else {
             this.subscribeToSaveResponse(
-                this.purchaseItemService.create(this.purchaseItem), true);
+                this.purchaseItemService.create(this.purchaseItem));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<PurchaseItemMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<PurchaseItemMysuffix>) {
         result.subscribe((res: PurchaseItemMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: PurchaseItemMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.purchaseItem.created'
-            : 'drzugApp.purchaseItem.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: PurchaseItemMysuffix) {
         this.eventManager.broadcast({ name: 'purchaseItemListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -116,7 +104,6 @@ export class PurchaseItemMysuffixDialogComponent implements OnInit {
 })
 export class PurchaseItemMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -127,11 +114,11 @@ export class PurchaseItemMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.purchaseItemPopupService
-                    .open(PurchaseItemMysuffixDialogComponent, params['id']);
+                this.purchaseItemPopupService
+                    .open(PurchaseItemMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.purchaseItemPopupService
-                    .open(PurchaseItemMysuffixDialogComponent);
+                this.purchaseItemPopupService
+                    .open(PurchaseItemMysuffixDialogComponent as Component);
             }
         });
     }

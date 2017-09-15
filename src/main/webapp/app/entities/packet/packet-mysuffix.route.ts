@@ -2,19 +2,17 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
 
 import { UserRouteAccessService } from '../../shared';
-import { PaginationUtil } from 'ng-jhipster';
+import { JhiPaginationUtil } from 'ng-jhipster';
 
 import { PacketMysuffixComponent } from './packet-mysuffix.component';
 import { PacketMysuffixDetailComponent } from './packet-mysuffix-detail.component';
 import { PacketMysuffixPopupComponent } from './packet-mysuffix-dialog.component';
 import { PacketMysuffixDeletePopupComponent } from './packet-mysuffix-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 @Injectable()
 export class PacketMysuffixResolvePagingParams implements Resolve<any> {
 
-    constructor(private paginationUtil: PaginationUtil) {}
+    constructor(private paginationUtil: JhiPaginationUtil) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const page = route.queryParams['page'] ? route.queryParams['page'] : '1';

@@ -42,6 +42,7 @@ public class InvoiceItem implements Serializable {
     @ManyToOne
     private Tax tax;
 
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -114,6 +115,7 @@ public class InvoiceItem implements Serializable {
     public void setTax(Tax tax) {
         this.tax = tax;
     }
+    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

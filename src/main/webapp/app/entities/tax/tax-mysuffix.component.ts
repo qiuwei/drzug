@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager, ParseLinks, PaginationUtil, JhiLanguageService, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
 
 import { TaxMysuffix } from './tax-mysuffix.model';
 import { TaxMysuffixService } from './tax-mysuffix.service';
@@ -31,13 +31,13 @@ currentAccount: any;
 
     constructor(
         private taxService: TaxMysuffixService,
-        private parseLinks: ParseLinks,
-        private alertService: AlertService,
+        private parseLinks: JhiParseLinks,
+        private alertService: JhiAlertService,
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private eventManager: EventManager,
-        private paginationUtil: PaginationUtil,
+        private eventManager: JhiEventManager,
+        private paginationUtil: JhiPaginationUtil,
         private paginationConfig: PaginationConfig
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;

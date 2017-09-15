@@ -1,7 +1,7 @@
 version: '2'
 services:
     drzug-postgresql:
-        image: postgres:9.6.2
+        image: postgres:9.6.5
         # volumes:
         #     - ~/volumes/jhipster/drzug/postgresql/:/var/lib/postgresql/data/
         environment:

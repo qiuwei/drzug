@@ -32,13 +32,13 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.invoice.status" for="field_status">Status</label>
             <select class="form-control" name="status" [(ngModel)]="invoice.status" id="field_status" >
-                <option value="OPEN" jhiTranslate="drzugApp.InvoiceStatus.OPEN">OPEN</option>
-                <option value="PAID" jhiTranslate="drzugApp.InvoiceStatus.PAID">PAID</option>
+                <option value="OPEN">{{'drzugApp.InvoiceStatus.OPEN' | translate}}</option>
+                <option value="PAID">{{'drzugApp.InvoiceStatus.PAID' | translate}}</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="drzugApp.invoice.customer" for="field_customer">Customer</label>
+            <label class="form-control-label" jhiTranslate="drzugApp.invoice.customer" for="field_customer">Customer</label>
             <select class="form-control" id="field_customer" name="customer" [(ngModel)]="invoice.customerId" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackCustomerById">{{customerOption.firstName}}</option>
@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

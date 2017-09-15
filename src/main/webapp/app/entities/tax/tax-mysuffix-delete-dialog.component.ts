@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService, EventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { TaxMysuffix } from './tax-mysuffix.model';
 import { TaxMysuffixPopupService } from './tax-mysuffix-popup.service';
@@ -19,8 +19,7 @@ export class TaxMysuffixDeleteDialogComponent {
     constructor(
         private taxService: TaxMysuffixService,
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
@@ -36,7 +35,6 @@ export class TaxMysuffixDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('drzugApp.tax.deleted', { param : id }, null);
     }
 }
 
@@ -46,7 +44,6 @@ export class TaxMysuffixDeleteDialogComponent {
 })
 export class TaxMysuffixDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -56,8 +53,8 @@ export class TaxMysuffixDeletePopupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.taxPopupService
-                .open(TaxMysuffixDeleteDialogComponent, params['id']);
+            this.taxPopupService
+                .open(TaxMysuffixDeleteDialogComponent as Component, params['id']);
         });
     }
 

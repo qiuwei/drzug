@@ -40,6 +40,8 @@ public class AccountResource {
 
     private final MailService mailService;
 
+    private static final String CHECK_ERROR_MESSAGE = "Incorrect password";
+
     public AccountResource(UserRepository userRepository, UserService userService,
             MailService mailService) {
 
@@ -61,7 +63,9 @@ public class AccountResource {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
-
+        if (!checkPasswordLength(managedUserVM.getPassword())) {
+            return new ResponseEntity<>(CHECK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
+        }
         return userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase())
             .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
             .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
@@ -144,29 +148,29 @@ public class AccountResource {
     }
 
     /**
-     * POST  /account/change_password : changes the current user's password
+     * POST  /account/change-password : changes the current user's password
      *
      * @param password the new password
      * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) if the new password is not strong enough
      */
-    @PostMapping(path = "/account/change_password",
+    @PostMapping(path = "/account/change-password",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
     public ResponseEntity changePassword(@RequestBody String password) {
         if (!checkPasswordLength(password)) {
-            return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(CHECK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
         }
         userService.changePassword(password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
-     * POST   /account/reset_password/init : Send an email to reset the password of the user
+     * POST   /account/reset-password/init : Send an email to reset the password of the user
      *
      * @param mail the mail of the user
      * @return the ResponseEntity with status 200 (OK) if the email was sent, or status 400 (Bad Request) if the email address is not registered
      */
-    @PostMapping(path = "/account/reset_password/init",
+    @PostMapping(path = "/account/reset-password/init",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
     public ResponseEntity requestPasswordReset(@RequestBody String mail) {
@@ -178,18 +182,18 @@ public class AccountResource {
     }
 
     /**
-     * POST   /account/reset_password/finish : Finish to reset the password of the user
+     * POST   /account/reset-password/finish : Finish to reset the password of the user
      *
      * @param keyAndPassword the generated key and the new password
      * @return the ResponseEntity with status 200 (OK) if the password has been reset,
      * or status 400 (Bad Request) or 500 (Internal Server Error) if the password could not be reset
      */
-    @PostMapping(path = "/account/reset_password/finish",
+    @PostMapping(path = "/account/reset-password/finish",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
     public ResponseEntity<String> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
-            return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(CHECK_ERROR_MESSAGE, HttpStatus.BAD_REQUEST);
         }
         return userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
               .map(user -> new ResponseEntity<String>(HttpStatus.OK))

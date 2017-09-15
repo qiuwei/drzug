@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { OrderItemMysuffix } from './order-item-mysuffix.model';
 import { OrderItemMysuffixPopupService } from './order-item-mysuffix-popup.service';
@@ -20,7 +20,6 @@ import { ResponseWrapper } from '../../shared';
 export class OrderItemMysuffixDialogComponent implements OnInit {
 
     orderItem: OrderItemMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     products: ProductMysuffix[];
@@ -29,17 +28,16 @@ export class OrderItemMysuffixDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private orderItemService: OrderItemMysuffixService,
         private productService: ProductMysuffixService,
         private orderService: OrderMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.productService
             .query({filter: 'orderitem-is-null'})
             .subscribe((res: ResponseWrapper) => {
@@ -56,6 +54,7 @@ export class OrderItemMysuffixDialogComponent implements OnInit {
         this.orderService.query()
             .subscribe((res: ResponseWrapper) => { this.orders = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -64,40 +63,29 @@ export class OrderItemMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.orderItem.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.orderItemService.update(this.orderItem), false);
+                this.orderItemService.update(this.orderItem));
         } else {
             this.subscribeToSaveResponse(
-                this.orderItemService.create(this.orderItem), true);
+                this.orderItemService.create(this.orderItem));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<OrderItemMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<OrderItemMysuffix>) {
         result.subscribe((res: OrderItemMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: OrderItemMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.orderItem.created'
-            : 'drzugApp.orderItem.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: OrderItemMysuffix) {
         this.eventManager.broadcast({ name: 'orderItemListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -116,7 +104,6 @@ export class OrderItemMysuffixDialogComponent implements OnInit {
 })
 export class OrderItemMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -127,11 +114,11 @@ export class OrderItemMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.orderItemPopupService
-                    .open(OrderItemMysuffixDialogComponent, params['id']);
+                this.orderItemPopupService
+                    .open(OrderItemMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.orderItemPopupService
-                    .open(OrderItemMysuffixDialogComponent);
+                this.orderItemPopupService
+                    .open(OrderItemMysuffixDialogComponent as Component);
             }
         });
     }

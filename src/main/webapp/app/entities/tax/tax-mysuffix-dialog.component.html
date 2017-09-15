@@ -15,8 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.tax.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="tax.name"
-            required />
+                [(ngModel)]="tax.name" required />
             <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
@@ -27,8 +26,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.tax.rate" for="field_rate">Rate</label>
             <input type="number" class="form-control" name="rate" id="field_rate"
-                [(ngModel)]="tax.rate"
-            required />
+                [(ngModel)]="tax.rate" required />
             <div [hidden]="!(editForm.controls.rate?.dirty && editForm.controls.rate?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.rate?.errors?.required" jhiTranslate="entity.validation.required">
@@ -43,7 +41,7 @@
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

@@ -40,6 +40,7 @@ public class Payment implements Serializable {
     @Column(name = "unit", nullable = false)
     private Unit unit;
 
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -86,6 +87,7 @@ public class Payment implements Serializable {
     public void setUnit(Unit unit) {
         this.unit = unit;
     }
+    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

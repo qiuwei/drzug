@@ -54,7 +54,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService{
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<InvoiceItemDTO> findAllByInvoiceId(Pageable pageable, Long invoiceId) {
+    public Page<InvoiceItemDTO> findAllByInvoice_Id(Pageable pageable, Long invoiceId) {
         log.debug("Request to get all InvocieItems belong to Invoice with id: {}", invoiceId);
         return invoiceItemRepository.findAllByInvoiceId(pageable, invoiceId)
             .map(invoiceItemMapper::toDto);

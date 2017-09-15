@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { PacketItemMysuffix } from './packet-item-mysuffix.model';
 import { PacketItemMysuffixPopupService } from './packet-item-mysuffix-popup.service';
@@ -19,26 +19,25 @@ import { ResponseWrapper } from '../../shared';
 export class PacketItemMysuffixDialogComponent implements OnInit {
 
     packetItem: PacketItemMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     packets: PacketMysuffix[];
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private packetItemService: PacketItemMysuffixService,
         private packetService: PacketMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.packetService.query()
             .subscribe((res: ResponseWrapper) => { this.packets = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -47,40 +46,29 @@ export class PacketItemMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.packetItem.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.packetItemService.update(this.packetItem), false);
+                this.packetItemService.update(this.packetItem));
         } else {
             this.subscribeToSaveResponse(
-                this.packetItemService.create(this.packetItem), true);
+                this.packetItemService.create(this.packetItem));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<PacketItemMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<PacketItemMysuffix>) {
         result.subscribe((res: PacketItemMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: PacketItemMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.packetItem.created'
-            : 'drzugApp.packetItem.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: PacketItemMysuffix) {
         this.eventManager.broadcast({ name: 'packetItemListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -95,7 +83,6 @@ export class PacketItemMysuffixDialogComponent implements OnInit {
 })
 export class PacketItemMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -106,11 +93,11 @@ export class PacketItemMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.packetItemPopupService
-                    .open(PacketItemMysuffixDialogComponent, params['id']);
+                this.packetItemPopupService
+                    .open(PacketItemMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.packetItemPopupService
-                    .open(PacketItemMysuffixDialogComponent);
+                this.packetItemPopupService
+                    .open(PacketItemMysuffixDialogComponent as Component);
             }
         });
     }

@@ -66,7 +66,7 @@ public class PurchaseResource {
      * @param purchaseDTO the purchaseDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated purchaseDTO,
      * or with status 400 (Bad Request) if the purchaseDTO is not valid,
-     * or with status 500 (Internal Server Error) if the purchaseDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the purchaseDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/purchases")

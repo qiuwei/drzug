@@ -3,29 +3,40 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CustomerMysuffix } from './customer-mysuffix.model';
 import { CustomerMysuffixService } from './customer-mysuffix.service';
+
 @Injectable()
 export class CustomerMysuffixPopupService {
-    private isOpen = false;
+    private ngbModalRef: NgbModalRef;
+
     constructor(
         private modalService: NgbModal,
         private router: Router,
         private customerService: CustomerMysuffixService
 
-    ) {}
+    ) {
+        this.ngbModalRef = null;
+    }
 
-    open(component: Component, id?: number | any): NgbModalRef {
-        if (this.isOpen) {
-            return;
-        }
-        this.isOpen = true;
+    open(component: Component, id?: number | any): Promise<NgbModalRef> {
+        return new Promise<NgbModalRef>((resolve, reject) => {
+            const isOpen = this.ngbModalRef !== null;
+            if (isOpen) {
+                resolve(this.ngbModalRef);
+            }
 
-        if (id) {
-            this.customerService.find(id).subscribe((customer) => {
-                this.customerModalRef(component, customer);
-            });
-        } else {
-            return this.customerModalRef(component, new CustomerMysuffix());
-        }
+            if (id) {
+                this.customerService.find(id).subscribe((customer) => {
+                    this.ngbModalRef = this.customerModalRef(component, customer);
+                    resolve(this.ngbModalRef);
+                });
+            } else {
+                // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
+                setTimeout(() => {
+                    this.ngbModalRef = this.customerModalRef(component, new CustomerMysuffix());
+                    resolve(this.ngbModalRef);
+                }, 0);
+            }
+        });
     }
 
     customerModalRef(component: Component, customer: CustomerMysuffix): NgbModalRef {
@@ -33,10 +44,10 @@ export class CustomerMysuffixPopupService {
         modalRef.componentInstance.customer = customer;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
-            this.isOpen = false;
+            this.ngbModalRef = null;
         }, (reason) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
-            this.isOpen = false;
+            this.ngbModalRef = null;
         });
         return modalRef;
     }

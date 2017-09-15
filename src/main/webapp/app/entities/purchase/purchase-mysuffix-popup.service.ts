@@ -4,32 +4,43 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { PurchaseMysuffix } from './purchase-mysuffix.model';
 import { PurchaseMysuffixService } from './purchase-mysuffix.service';
+
 @Injectable()
 export class PurchaseMysuffixPopupService {
-    private isOpen = false;
+    private ngbModalRef: NgbModalRef;
+
     constructor(
         private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private purchaseService: PurchaseMysuffixService
 
-    ) {}
+    ) {
+        this.ngbModalRef = null;
+    }
 
-    open(component: Component, id?: number | any): NgbModalRef {
-        if (this.isOpen) {
-            return;
-        }
-        this.isOpen = true;
+    open(component: Component, id?: number | any): Promise<NgbModalRef> {
+        return new Promise<NgbModalRef>((resolve, reject) => {
+            const isOpen = this.ngbModalRef !== null;
+            if (isOpen) {
+                resolve(this.ngbModalRef);
+            }
 
-        if (id) {
-            this.purchaseService.find(id).subscribe((purchase) => {
-                purchase.createdAt = this.datePipe
-                    .transform(purchase.createdAt, 'yyyy-MM-ddThh:mm');
-                this.purchaseModalRef(component, purchase);
-            });
-        } else {
-            return this.purchaseModalRef(component, new PurchaseMysuffix());
-        }
+            if (id) {
+                this.purchaseService.find(id).subscribe((purchase) => {
+                    purchase.createdAt = this.datePipe
+                        .transform(purchase.createdAt, 'yyyy-MM-ddTHH:mm:ss');
+                    this.ngbModalRef = this.purchaseModalRef(component, purchase);
+                    resolve(this.ngbModalRef);
+                });
+            } else {
+                // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
+                setTimeout(() => {
+                    this.ngbModalRef = this.purchaseModalRef(component, new PurchaseMysuffix());
+                    resolve(this.ngbModalRef);
+                }, 0);
+            }
+        });
     }
 
     purchaseModalRef(component: Component, purchase: PurchaseMysuffix): NgbModalRef {
@@ -37,10 +48,10 @@ export class PurchaseMysuffixPopupService {
         modalRef.componentInstance.purchase = purchase;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
-            this.isOpen = false;
+            this.ngbModalRef = null;
         }, (reason) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
-            this.isOpen = false;
+            this.ngbModalRef = null;
         });
         return modalRef;
     }

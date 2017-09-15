@@ -80,7 +80,7 @@ public class OrderResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        OrderResource orderResource = new OrderResource(orderService);
+        final OrderResource orderResource = new OrderResource(orderService);
         this.restOrderMockMvc = MockMvcBuilders.standaloneSetup(orderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -140,7 +140,7 @@ public class OrderResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(orderDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Order in the database
         List<Order> orderList = orderRepository.findAll();
         assertThat(orderList).hasSize(databaseSizeBeforeCreate);
     }

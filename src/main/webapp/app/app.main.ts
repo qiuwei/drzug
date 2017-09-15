@@ -8,4 +8,6 @@ if (module['hot']) {
     module['hot'].accept();
 }
 
-platformBrowserDynamic().bootstrapModule(DrzugAppModule);
+platformBrowserDynamic().bootstrapModule(DrzugAppModule)
+.then((success) => console.log(`Application started`))
+.catch((err) => console.error(err));

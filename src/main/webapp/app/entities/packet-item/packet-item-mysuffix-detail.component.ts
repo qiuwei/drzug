@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager  } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { PacketItemMysuffix } from './packet-item-mysuffix.model';
 import { PacketItemMysuffixService } from './packet-item-mysuffix.service';
@@ -17,7 +17,7 @@ export class PacketItemMysuffixDetailComponent implements OnInit, OnDestroy {
     private eventSubscriber: Subscription;
 
     constructor(
-        private eventManager: EventManager,
+        private eventManager: JhiEventManager,
         private packetItemService: PacketItemMysuffixService,
         private route: ActivatedRoute
     ) {

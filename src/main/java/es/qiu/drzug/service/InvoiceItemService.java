@@ -23,7 +23,7 @@ public interface InvoiceItemService {
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<InvoiceItemDTO> findAllByInvoiceId(Pageable pageable, Long invoiceId);
+    Page<InvoiceItemDTO> findAllByInvoice_Id(Pageable pageable, Long invoiceId);
 
 
     /**

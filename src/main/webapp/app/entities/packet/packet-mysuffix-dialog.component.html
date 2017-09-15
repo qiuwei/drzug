@@ -15,8 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.packet.weight" for="field_weight">Weight</label>
             <input type="number" class="form-control" name="weight" id="field_weight"
-                [(ngModel)]="packet.weight"
-            required />
+                [(ngModel)]="packet.weight" required />
             <div [hidden]="!(editForm.controls.weight?.dirty && editForm.controls.weight?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.weight?.errors?.required" jhiTranslate="entity.validation.required">
@@ -31,9 +30,9 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.packet.status" for="field_status">Status</label>
             <select class="form-control" name="status" [(ngModel)]="packet.status" id="field_status"  required>
-                <option value="NEW" jhiTranslate="drzugApp.PacketStatus.NEW">NEW</option>
-                <option value="SENT" jhiTranslate="drzugApp.PacketStatus.SENT">SENT</option>
-                <option value="ARRIVED" jhiTranslate="drzugApp.PacketStatus.ARRIVED">ARRIVED</option>
+                <option value="NEW">{{'drzugApp.PacketStatus.NEW' | translate}}</option>
+                <option value="SENT">{{'drzugApp.PacketStatus.SENT' | translate}}</option>
+                <option value="ARRIVED">{{'drzugApp.PacketStatus.ARRIVED' | translate}}</option>
             </select>
             <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
                 <small class="form-text text-danger"
@@ -44,7 +43,7 @@
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="drzugApp.packet.destination" for="field_destination">Destination</label>
+            <label class="form-control-label" jhiTranslate="drzugApp.packet.destination" for="field_destination">Destination</label>
             <select class="form-control" id="field_destination" name="destination" [(ngModel)]="packet.destinationId">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="storageOption.id" *ngFor="let storageOption of destinations; trackBy: trackStorageById">{{storageOption.name}}</option>
@@ -52,7 +51,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

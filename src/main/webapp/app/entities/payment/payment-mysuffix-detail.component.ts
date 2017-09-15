@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager  } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { PaymentMysuffix } from './payment-mysuffix.model';
 import { PaymentMysuffixService } from './payment-mysuffix.service';
@@ -17,7 +17,7 @@ export class PaymentMysuffixDetailComponent implements OnInit, OnDestroy {
     private eventSubscriber: Subscription;
 
     constructor(
-        private eventManager: EventManager,
+        private eventManager: JhiEventManager,
         private paymentService: PaymentMysuffixService,
         private route: ActivatedRoute
     ) {

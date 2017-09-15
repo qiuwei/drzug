@@ -15,8 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.orderItem.count" for="field_count">Count</label>
             <input type="number" class="form-control" name="count" id="field_count"
-                [(ngModel)]="orderItem.count"
-            required />
+                [(ngModel)]="orderItem.count" required />
             <div [hidden]="!(editForm.controls.count?.dirty && editForm.controls.count?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.count?.errors?.required" jhiTranslate="entity.validation.required">
@@ -31,19 +30,18 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.orderItem.salePrice" for="field_salePrice">Sale Price</label>
             <input type="number" class="form-control" name="salePrice" id="field_salePrice"
-                [(ngModel)]="orderItem.salePrice"
-             />
+                [(ngModel)]="orderItem.salePrice"  />
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="drzugApp.orderItem.product" for="field_product">Product</label>
+            <label class="form-control-label" jhiTranslate="drzugApp.orderItem.product" for="field_product">Product</label>
             <select class="form-control" id="field_product" name="product" [(ngModel)]="orderItem.productId">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
-            <label jhiTranslate="drzugApp.orderItem.order" for="field_order">Order</label>
+            <label class="form-control-label" jhiTranslate="drzugApp.orderItem.order" for="field_order">Order</label>
             <select class="form-control" id="field_order" name="order" [(ngModel)]="orderItem.orderId" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="orderOption.id" *ngFor="let orderOption of orders; trackBy: trackOrderById">{{orderOption.id}}</option>
@@ -51,7 +49,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

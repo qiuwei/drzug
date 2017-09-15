@@ -36,6 +36,7 @@ public class Purchase implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PurchaseItem> purchaseItems = new HashSet<>();
 
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -81,6 +82,7 @@ public class Purchase implements Serializable {
     public void setPurchaseItems(Set<PurchaseItem> purchaseItems) {
         this.purchaseItems = purchaseItems;
     }
+    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

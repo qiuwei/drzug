@@ -66,7 +66,7 @@ public class InvoiceItemResource {
      * @param invoiceItemDTO the invoiceItemDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated invoiceItemDTO,
      * or with status 400 (Bad Request) if the invoiceItemDTO is not valid,
-     * or with status 500 (Internal Server Error) if the invoiceItemDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the invoiceItemDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("{invoice_id}/invoice-items")
@@ -92,7 +92,7 @@ public class InvoiceItemResource {
     @Timed
     public ResponseEntity<List<InvoiceItemDTO>> getAllInvoiceItems(@ApiParam Pageable pageable, @PathVariable Long invoice_id) {
         log.debug("REST request to get a page of InvoiceItems");
-        Page<InvoiceItemDTO> page = invoiceItemService.findAll(pageable);
+        Page<InvoiceItemDTO> page = invoiceItemService.findAllByInvoice_Id(pageable, invoice_id);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/invoice-items");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

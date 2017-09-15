@@ -12,12 +12,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Long> {
-    
+public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select distinct product from Product product left join fetch product.providers")
     List<Product> findAllWithEagerRelationships();
 
     @Query("select product from Product product left join fetch product.providers where product.id =:id")
     Product findOneWithEagerRelationships(@Param("id") Long id);
-    
+
 }

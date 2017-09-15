@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface InvoiceItemRepository extends JpaRepository<InvoiceItem,Long> {
+public interface InvoiceItemRepository extends JpaRepository<InvoiceItem, Long> {
 
     Page<InvoiceItem> findAllByInvoiceId(Pageable pageable, Long invoiceId);
 }

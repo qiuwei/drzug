@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { SERVER_API_URL } from '../../app.constants';
 
 import { TaxMysuffix } from './tax-mysuffix.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -8,7 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class TaxMysuffixService {
 
-    private resourceUrl = 'api/taxes';
+    private resourceUrl = SERVER_API_URL + 'api/taxes';
 
     constructor(private http: Http) { }
 

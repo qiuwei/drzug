@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { InvoiceItemMysuffix } from './invoice-item-mysuffix.model';
 import { InvoiceItemMysuffixPopupService } from './invoice-item-mysuffix-popup.service';
@@ -21,7 +21,6 @@ import { ResponseWrapper } from '../../shared';
 export class InvoiceItemMysuffixDialogComponent implements OnInit {
 
     invoiceItem: InvoiceItemMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     invoices: InvoiceMysuffix[];
@@ -32,18 +31,17 @@ export class InvoiceItemMysuffixDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private invoiceItemService: InvoiceItemMysuffixService,
         private invoiceService: InvoiceMysuffixService,
         private productService: ProductMysuffixService,
         private taxService: TaxMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.invoiceService.query()
             .subscribe((res: ResponseWrapper) => { this.invoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.productService
@@ -73,6 +71,7 @@ export class InvoiceItemMysuffixDialogComponent implements OnInit {
                 }
             }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -81,40 +80,29 @@ export class InvoiceItemMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.invoiceItem.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.invoiceItemService.update(this.invoiceItem), false);
+                this.invoiceItemService.update(this.invoiceItem));
         } else {
             this.subscribeToSaveResponse(
-                this.invoiceItemService.create(this.invoiceItem), true);
+                this.invoiceItemService.create(this.invoiceItem));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<InvoiceItemMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<InvoiceItemMysuffix>) {
         result.subscribe((res: InvoiceItemMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: InvoiceItemMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.invoiceItem.created'
-            : 'drzugApp.invoiceItem.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: InvoiceItemMysuffix) {
         this.eventManager.broadcast({ name: 'invoiceItemListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -137,7 +125,6 @@ export class InvoiceItemMysuffixDialogComponent implements OnInit {
 })
 export class InvoiceItemMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -148,11 +135,11 @@ export class InvoiceItemMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.invoiceItemPopupService
-                    .open(InvoiceItemMysuffixDialogComponent, params['id']);
+                this.invoiceItemPopupService
+                    .open(InvoiceItemMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.invoiceItemPopupService
-                    .open(InvoiceItemMysuffixDialogComponent);
+                this.invoiceItemPopupService
+                    .open(InvoiceItemMysuffixDialogComponent as Component);
             }
         });
     }

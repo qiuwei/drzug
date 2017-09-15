@@ -42,6 +42,7 @@ public class Invoice implements Serializable {
     @ManyToOne
     private Customer customer;
 
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -113,6 +114,7 @@ public class Invoice implements Serializable {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

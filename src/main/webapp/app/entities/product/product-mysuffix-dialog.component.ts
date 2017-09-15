@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, DataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { ProductMysuffix } from './product-mysuffix.model';
 import { ProductMysuffixPopupService } from './product-mysuffix-popup.service';
@@ -20,7 +20,6 @@ import { ResponseWrapper } from '../../shared';
 export class ProductMysuffixDialogComponent implements OnInit {
 
     product: ProductMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     sourcetaxes: TaxMysuffix[];
@@ -29,18 +28,18 @@ export class ProductMysuffixDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private dataUtils: DataUtils,
-        private alertService: AlertService,
+        private dataUtils: JhiDataUtils,
+        private alertService: JhiAlertService,
         private productService: ProductMysuffixService,
         private taxService: TaxMysuffixService,
         private providerService: ProviderMysuffixService,
-        private eventManager: EventManager
+        private elementRef: ElementRef,
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.taxService
             .query({filter: 'product-is-null'})
             .subscribe((res: ResponseWrapper) => {
@@ -57,6 +56,7 @@ export class ProductMysuffixDialogComponent implements OnInit {
         this.providerService.query()
             .subscribe((res: ResponseWrapper) => { this.providers = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -65,18 +65,14 @@ export class ProductMysuffixDialogComponent implements OnInit {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    setFileData(event, product, field, isImage) {
-        if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            if (isImage && !/^image\//.test(file.type)) {
-                return;
-            }
-            this.dataUtils.toBase64(file, (base64Data) => {
-                product[field] = base64Data;
-                product[`${field}ContentType`] = file.type;
-            });
-        }
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
     }
+
+    clearInputImage(field: string, fieldContentType: string, idInput: string) {
+        this.dataUtils.clearInputImage(this.product, this.elementRef, field, fieldContentType, idInput);
+    }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -85,40 +81,29 @@ export class ProductMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.product.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.productService.update(this.product), false);
+                this.productService.update(this.product));
         } else {
             this.subscribeToSaveResponse(
-                this.productService.create(this.product), true);
+                this.productService.create(this.product));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<ProductMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<ProductMysuffix>) {
         result.subscribe((res: ProductMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: ProductMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.product.created'
-            : 'drzugApp.product.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: ProductMysuffix) {
         this.eventManager.broadcast({ name: 'productListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -148,7 +133,6 @@ export class ProductMysuffixDialogComponent implements OnInit {
 })
 export class ProductMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -159,11 +143,11 @@ export class ProductMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.productPopupService
-                    .open(ProductMysuffixDialogComponent, params['id']);
+                this.productPopupService
+                    .open(ProductMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.productPopupService
-                    .open(ProductMysuffixDialogComponent);
+                this.productPopupService
+                    .open(ProductMysuffixDialogComponent as Component);
             }
         });
     }

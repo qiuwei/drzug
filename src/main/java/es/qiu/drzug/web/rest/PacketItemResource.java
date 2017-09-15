@@ -66,7 +66,7 @@ public class PacketItemResource {
      * @param packetItemDTO the packetItemDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated packetItemDTO,
      * or with status 400 (Bad Request) if the packetItemDTO is not valid,
-     * or with status 500 (Internal Server Error) if the packetItemDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the packetItemDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("{packet_id}/packet-items")
