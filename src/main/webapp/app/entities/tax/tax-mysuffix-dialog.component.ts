@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { TaxMysuffix } from './tax-mysuffix.model';
 import { TaxMysuffixPopupService } from './tax-mysuffix-popup.service';
@@ -17,21 +17,20 @@ import { TaxMysuffixService } from './tax-mysuffix.service';
 export class TaxMysuffixDialogComponent implements OnInit {
 
     tax: TaxMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private taxService: TaxMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,40 +39,29 @@ export class TaxMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.tax.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.taxService.update(this.tax), false);
+                this.taxService.update(this.tax));
         } else {
             this.subscribeToSaveResponse(
-                this.taxService.create(this.tax), true);
+                this.taxService.create(this.tax));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<TaxMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<TaxMysuffix>) {
         result.subscribe((res: TaxMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: TaxMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.tax.created'
-            : 'drzugApp.tax.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: TaxMysuffix) {
         this.eventManager.broadcast({ name: 'taxListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 }
@@ -84,7 +72,6 @@ export class TaxMysuffixDialogComponent implements OnInit {
 })
 export class TaxMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -95,11 +82,11 @@ export class TaxMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.taxPopupService
-                    .open(TaxMysuffixDialogComponent, params['id']);
+                this.taxPopupService
+                    .open(TaxMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.taxPopupService
-                    .open(TaxMysuffixDialogComponent);
+                this.taxPopupService
+                    .open(TaxMysuffixDialogComponent as Component);
             }
         });
     }

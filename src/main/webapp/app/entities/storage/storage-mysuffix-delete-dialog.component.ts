@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService, EventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { StorageMysuffix } from './storage-mysuffix.model';
 import { StorageMysuffixPopupService } from './storage-mysuffix-popup.service';
@@ -19,8 +19,7 @@ export class StorageMysuffixDeleteDialogComponent {
     constructor(
         private storageService: StorageMysuffixService,
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
@@ -36,7 +35,6 @@ export class StorageMysuffixDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('drzugApp.storage.deleted', { param : id }, null);
     }
 }
 
@@ -46,7 +44,6 @@ export class StorageMysuffixDeleteDialogComponent {
 })
 export class StorageMysuffixDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -56,8 +53,8 @@ export class StorageMysuffixDeletePopupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.storagePopupService
-                .open(StorageMysuffixDeleteDialogComponent, params['id']);
+            this.storagePopupService
+                .open(StorageMysuffixDeleteDialogComponent as Component, params['id']);
         });
     }
 

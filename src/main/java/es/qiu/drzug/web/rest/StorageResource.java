@@ -66,7 +66,7 @@ public class StorageResource {
      * @param storageDTO the storageDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated storageDTO,
      * or with status 400 (Bad Request) if the storageDTO is not valid,
-     * or with status 500 (Internal Server Error) if the storageDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the storageDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/storages")

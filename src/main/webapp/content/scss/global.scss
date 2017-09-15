@@ -1,3 +1,4 @@
+@import 'bootstrap-variables';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -77,7 +78,7 @@ a:hover {
   cursor: pointer;
 }
 
-.hand {
+.hand, [jhisortby] {
     cursor: pointer;
 }
 
@@ -242,5 +243,4 @@ Social button
     border-color: rgba(0, 0, 0, 0.2);
     color: #fff;
 }
-
 /* jhipster-needle-scss-add-main JHipster will add new css style */

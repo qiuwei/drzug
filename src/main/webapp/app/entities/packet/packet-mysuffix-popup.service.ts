@@ -3,29 +3,40 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PacketMysuffix } from './packet-mysuffix.model';
 import { PacketMysuffixService } from './packet-mysuffix.service';
+
 @Injectable()
 export class PacketMysuffixPopupService {
-    private isOpen = false;
+    private ngbModalRef: NgbModalRef;
+
     constructor(
         private modalService: NgbModal,
         private router: Router,
         private packetService: PacketMysuffixService
 
-    ) {}
+    ) {
+        this.ngbModalRef = null;
+    }
 
-    open(component: Component, id?: number | any): NgbModalRef {
-        if (this.isOpen) {
-            return;
-        }
-        this.isOpen = true;
+    open(component: Component, id?: number | any): Promise<NgbModalRef> {
+        return new Promise<NgbModalRef>((resolve, reject) => {
+            const isOpen = this.ngbModalRef !== null;
+            if (isOpen) {
+                resolve(this.ngbModalRef);
+            }
 
-        if (id) {
-            this.packetService.find(id).subscribe((packet) => {
-                this.packetModalRef(component, packet);
-            });
-        } else {
-            return this.packetModalRef(component, new PacketMysuffix());
-        }
+            if (id) {
+                this.packetService.find(id).subscribe((packet) => {
+                    this.ngbModalRef = this.packetModalRef(component, packet);
+                    resolve(this.ngbModalRef);
+                });
+            } else {
+                // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
+                setTimeout(() => {
+                    this.ngbModalRef = this.packetModalRef(component, new PacketMysuffix());
+                    resolve(this.ngbModalRef);
+                }, 0);
+            }
+        });
     }
 
     packetModalRef(component: Component, packet: PacketMysuffix): NgbModalRef {
@@ -33,10 +44,10 @@ export class PacketMysuffixPopupService {
         modalRef.componentInstance.packet = packet;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
-            this.isOpen = false;
+            this.ngbModalRef = null;
         }, (reason) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
-            this.isOpen = false;
+            this.ngbModalRef = null;
         });
         return modalRef;
     }

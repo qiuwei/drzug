@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { CustomerMysuffix } from './customer-mysuffix.model';
 import { CustomerMysuffixPopupService } from './customer-mysuffix-popup.service';
@@ -17,21 +17,20 @@ import { CustomerMysuffixService } from './customer-mysuffix.service';
 export class CustomerMysuffixDialogComponent implements OnInit {
 
     customer: CustomerMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private customerService: CustomerMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,40 +39,29 @@ export class CustomerMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.customer.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.customerService.update(this.customer), false);
+                this.customerService.update(this.customer));
         } else {
             this.subscribeToSaveResponse(
-                this.customerService.create(this.customer), true);
+                this.customerService.create(this.customer));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CustomerMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<CustomerMysuffix>) {
         result.subscribe((res: CustomerMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: CustomerMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.customer.created'
-            : 'drzugApp.customer.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: CustomerMysuffix) {
         this.eventManager.broadcast({ name: 'customerListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 }
@@ -84,7 +72,6 @@ export class CustomerMysuffixDialogComponent implements OnInit {
 })
 export class CustomerMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -95,11 +82,11 @@ export class CustomerMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.customerPopupService
-                    .open(CustomerMysuffixDialogComponent, params['id']);
+                this.customerPopupService
+                    .open(CustomerMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.customerPopupService
-                    .open(CustomerMysuffixDialogComponent);
+                this.customerPopupService
+                    .open(CustomerMysuffixDialogComponent as Component);
             }
         });
     }

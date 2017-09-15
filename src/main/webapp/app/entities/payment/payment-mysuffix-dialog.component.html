@@ -32,8 +32,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.payment.amount" for="field_amount">Amount</label>
             <input type="number" class="form-control" name="amount" id="field_amount"
-                [(ngModel)]="payment.amount"
-            required />
+                [(ngModel)]="payment.amount" required />
             <div [hidden]="!(editForm.controls.amount?.dirty && editForm.controls.amount?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.amount?.errors?.required" jhiTranslate="entity.validation.required">
@@ -48,8 +47,8 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.payment.unit" for="field_unit">Unit</label>
             <select class="form-control" name="unit" [(ngModel)]="payment.unit" id="field_unit"  required>
-                <option value="CNY" jhiTranslate="drzugApp.Unit.CNY">CNY</option>
-                <option value="EURO" jhiTranslate="drzugApp.Unit.EURO">EURO</option>
+                <option value="CNY">{{'drzugApp.Unit.CNY' | translate}}</option>
+                <option value="EURO">{{'drzugApp.Unit.EURO' | translate}}</option>
             </select>
             <div [hidden]="!(editForm.controls.unit?.dirty && editForm.controls.unit?.invalid)">
                 <small class="form-text text-danger"
@@ -61,7 +60,7 @@
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

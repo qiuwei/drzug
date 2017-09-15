@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService, EventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { PacketItemMysuffix } from './packet-item-mysuffix.model';
 import { PacketItemMysuffixPopupService } from './packet-item-mysuffix-popup.service';
@@ -19,8 +19,7 @@ export class PacketItemMysuffixDeleteDialogComponent {
     constructor(
         private packetItemService: PacketItemMysuffixService,
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
@@ -36,7 +35,6 @@ export class PacketItemMysuffixDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('drzugApp.packetItem.deleted', { param : id }, null);
     }
 }
 
@@ -46,7 +44,6 @@ export class PacketItemMysuffixDeleteDialogComponent {
 })
 export class PacketItemMysuffixDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -56,8 +53,8 @@ export class PacketItemMysuffixDeletePopupComponent implements OnInit, OnDestroy
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.packetItemPopupService
-                .open(PacketItemMysuffixDeleteDialogComponent, params['id']);
+            this.packetItemPopupService
+                .open(PacketItemMysuffixDeleteDialogComponent as Component, params['id']);
         });
     }
 

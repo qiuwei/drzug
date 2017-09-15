@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { PurchaseMysuffix } from './purchase-mysuffix.model';
 import { PurchaseMysuffixPopupService } from './purchase-mysuffix-popup.service';
@@ -17,21 +17,20 @@ import { PurchaseMysuffixService } from './purchase-mysuffix.service';
 export class PurchaseMysuffixDialogComponent implements OnInit {
 
     purchase: PurchaseMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private purchaseService: PurchaseMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,40 +39,29 @@ export class PurchaseMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.purchase.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.purchaseService.update(this.purchase), false);
+                this.purchaseService.update(this.purchase));
         } else {
             this.subscribeToSaveResponse(
-                this.purchaseService.create(this.purchase), true);
+                this.purchaseService.create(this.purchase));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<PurchaseMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<PurchaseMysuffix>) {
         result.subscribe((res: PurchaseMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: PurchaseMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.purchase.created'
-            : 'drzugApp.purchase.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: PurchaseMysuffix) {
         this.eventManager.broadcast({ name: 'purchaseListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 }
@@ -84,7 +72,6 @@ export class PurchaseMysuffixDialogComponent implements OnInit {
 })
 export class PurchaseMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -95,11 +82,11 @@ export class PurchaseMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.purchasePopupService
-                    .open(PurchaseMysuffixDialogComponent, params['id']);
+                this.purchasePopupService
+                    .open(PurchaseMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.purchasePopupService
-                    .open(PurchaseMysuffixDialogComponent);
+                this.purchasePopupService
+                    .open(PurchaseMysuffixDialogComponent as Component);
             }
         });
     }

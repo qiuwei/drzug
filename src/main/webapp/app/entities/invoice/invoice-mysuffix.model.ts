@@ -1,15 +1,16 @@
+import { BaseEntity } from './../../shared';
 
-const enum InvoiceStatus {
+export const enum InvoiceStatus {
     'OPEN',
     'PAID'
+}
 
-};
-export class InvoiceMysuffix {
+export class InvoiceMysuffix implements BaseEntity {
     constructor(
         public id?: number,
         public createAt?: any,
         public status?: InvoiceStatus,
-        public invoiceItemId?: number,
+        public invoiceItems?: BaseEntity[],
         public customerId?: number,
     ) {
     }

@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TaxRepository extends JpaRepository<Tax,Long> {
+public interface TaxRepository extends JpaRepository<Tax, Long> {
 
 }

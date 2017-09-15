@@ -1,4 +1,6 @@
-export class InvoiceItemMysuffix {
+import { BaseEntity } from './../../shared';
+
+export class InvoiceItemMysuffix implements BaseEntity {
     constructor(
         public id?: number,
         public count?: number,

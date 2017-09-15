@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager  } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { TaxMysuffix } from './tax-mysuffix.model';
 import { TaxMysuffixService } from './tax-mysuffix.service';
@@ -17,7 +17,7 @@ export class TaxMysuffixDetailComponent implements OnInit, OnDestroy {
     private eventSubscriber: Subscription;
 
     constructor(
-        private eventManager: EventManager,
+        private eventManager: JhiEventManager,
         private taxService: TaxMysuffixService,
         private route: ActivatedRoute
     ) {

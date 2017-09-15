@@ -88,7 +88,7 @@ public class ProductResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ProductResource productResource = new ProductResource(productService);
+        final ProductResource productResource = new ProductResource(productService);
         this.restProductMockMvc = MockMvcBuilders.standaloneSetup(productResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -156,7 +156,7 @@ public class ProductResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Product in the database
         List<Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeCreate);
     }

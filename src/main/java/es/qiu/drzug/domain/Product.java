@@ -61,6 +61,7 @@ public class Product implements Serializable {
                inverseJoinColumns = @JoinColumn(name="providers_id", referencedColumnName="id"))
     private Set<Provider> providers = new HashSet<>();
 
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -184,6 +185,7 @@ public class Product implements Serializable {
     public void setProviders(Set<Provider> providers) {
         this.providers = providers;
     }
+    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

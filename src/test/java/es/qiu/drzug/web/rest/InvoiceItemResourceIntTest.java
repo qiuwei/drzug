@@ -75,7 +75,7 @@ public class InvoiceItemResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        InvoiceItemResource invoiceItemResource = new InvoiceItemResource(invoiceItemService);
+        final InvoiceItemResource invoiceItemResource = new InvoiceItemResource(invoiceItemService);
         this.restInvoiceItemMockMvc = MockMvcBuilders.standaloneSetup(invoiceItemResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -135,7 +135,7 @@ public class InvoiceItemResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(invoiceItemDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the InvoiceItem in the database
         List<InvoiceItem> invoiceItemList = invoiceItemRepository.findAll();
         assertThat(invoiceItemList).hasSize(databaseSizeBeforeCreate);
     }

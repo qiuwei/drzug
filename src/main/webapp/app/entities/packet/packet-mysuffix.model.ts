@@ -1,17 +1,18 @@
+import { BaseEntity } from './../../shared';
 
-const enum PacketStatus {
+export const enum PacketStatus {
     'NEW',
     'SENT',
     'ARRIVED'
+}
 
-};
-export class PacketMysuffix {
+export class PacketMysuffix implements BaseEntity {
     constructor(
         public id?: number,
         public weight?: number,
         public status?: PacketStatus,
         public destinationId?: number,
-        public packetItemId?: number,
+        public packetItems?: BaseEntity[],
     ) {
     }
 }

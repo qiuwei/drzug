@@ -12,8 +12,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Long> {
-
+public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select distinct product from Product product left join fetch product.providers")
     List<Product> findAllWithEagerRelationships();
 

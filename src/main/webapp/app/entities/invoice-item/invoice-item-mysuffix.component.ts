@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager, ParseLinks, PaginationUtil, JhiLanguageService, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
 
 import { InvoiceItemMysuffix } from './invoice-item-mysuffix.model';
 import { InvoiceItemMysuffixService } from './invoice-item-mysuffix.service';
@@ -31,13 +31,13 @@ currentAccount: any;
 
     constructor(
         private invoiceItemService: InvoiceItemMysuffixService,
-        private parseLinks: ParseLinks,
-        private alertService: AlertService,
+        private parseLinks: JhiParseLinks,
+        private alertService: JhiAlertService,
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private eventManager: EventManager,
-        private paginationUtil: PaginationUtil,
+        private eventManager: JhiEventManager,
+        private paginationUtil: JhiPaginationUtil,
         private paginationConfig: PaginationConfig
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;

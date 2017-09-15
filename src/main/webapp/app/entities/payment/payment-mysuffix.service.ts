@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { DateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from '../../app.constants';
+
+import { JhiDateUtils } from 'ng-jhipster';
 
 import { PaymentMysuffix } from './payment-mysuffix.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -9,9 +11,9 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class PaymentMysuffixService {
 
-    private resourceUrl = 'api/payments';
+    private resourceUrl = SERVER_API_URL + 'api/payments';
 
-    constructor(private http: Http, private dateUtils: DateUtils) { }
+    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
     create(payment: PaymentMysuffix): Observable<PaymentMysuffix> {
         const copy = this.convert(payment);

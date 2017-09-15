@@ -71,7 +71,7 @@ public class StorageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        StorageResource storageResource = new StorageResource(storageService);
+        final StorageResource storageResource = new StorageResource(storageService);
         this.restStorageMockMvc = MockMvcBuilders.standaloneSetup(storageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -129,7 +129,7 @@ public class StorageResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(storageDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Storage in the database
         List<Storage> storageList = storageRepository.findAll();
         assertThat(storageList).hasSize(databaseSizeBeforeCreate);
     }

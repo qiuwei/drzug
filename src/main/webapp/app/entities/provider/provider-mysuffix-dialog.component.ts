@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { ProviderMysuffix } from './provider-mysuffix.model';
 import { ProviderMysuffixPopupService } from './provider-mysuffix-popup.service';
@@ -19,26 +19,25 @@ import { ResponseWrapper } from '../../shared';
 export class ProviderMysuffixDialogComponent implements OnInit {
 
     provider: ProviderMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     products: ProductMysuffix[];
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private providerService: ProviderMysuffixService,
         private productService: ProductMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.productService.query()
             .subscribe((res: ResponseWrapper) => { this.products = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -47,40 +46,29 @@ export class ProviderMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.provider.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.providerService.update(this.provider), false);
+                this.providerService.update(this.provider));
         } else {
             this.subscribeToSaveResponse(
-                this.providerService.create(this.provider), true);
+                this.providerService.create(this.provider));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<ProviderMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<ProviderMysuffix>) {
         result.subscribe((res: ProviderMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: ProviderMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.provider.created'
-            : 'drzugApp.provider.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: ProviderMysuffix) {
         this.eventManager.broadcast({ name: 'providerListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -106,7 +94,6 @@ export class ProviderMysuffixDialogComponent implements OnInit {
 })
 export class ProviderMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -117,11 +104,11 @@ export class ProviderMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.providerPopupService
-                    .open(ProviderMysuffixDialogComponent, params['id']);
+                this.providerPopupService
+                    .open(ProviderMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.providerPopupService
-                    .open(ProviderMysuffixDialogComponent);
+                this.providerPopupService
+                    .open(ProviderMysuffixDialogComponent as Component);
             }
         });
     }

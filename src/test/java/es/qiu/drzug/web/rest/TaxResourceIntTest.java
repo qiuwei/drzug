@@ -75,7 +75,7 @@ public class TaxResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        TaxResource taxResource = new TaxResource(taxService);
+        final TaxResource taxResource = new TaxResource(taxService);
         this.restTaxMockMvc = MockMvcBuilders.standaloneSetup(taxResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -135,7 +135,7 @@ public class TaxResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(taxDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Tax in the database
         List<Tax> taxList = taxRepository.findAll();
         assertThat(taxList).hasSize(databaseSizeBeforeCreate);
     }

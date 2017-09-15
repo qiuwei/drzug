@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { SERVER_API_URL } from '../../app.constants';
 
 import { InvoiceItemMysuffix } from './invoice-item-mysuffix.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -8,7 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class InvoiceItemMysuffixService {
 
-    private resourceUrl = 'api/invoice-items';
+    private resourceUrl = SERVER_API_URL + 'api/invoice-items';
 
     constructor(private http: Http) { }
 

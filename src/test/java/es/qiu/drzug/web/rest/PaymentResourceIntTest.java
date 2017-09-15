@@ -84,7 +84,7 @@ public class PaymentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PaymentResource paymentResource = new PaymentResource(paymentService);
+        final PaymentResource paymentResource = new PaymentResource(paymentService);
         this.restPaymentMockMvc = MockMvcBuilders.standaloneSetup(paymentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -146,7 +146,7 @@ public class PaymentResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(paymentDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Payment in the database
         List<Payment> paymentList = paymentRepository.findAll();
         assertThat(paymentList).hasSize(databaseSizeBeforeCreate);
     }

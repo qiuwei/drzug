@@ -66,7 +66,7 @@ public class InvoiceResource {
      * @param invoiceDTO the invoiceDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated invoiceDTO,
      * or with status 400 (Bad Request) if the invoiceDTO is not valid,
-     * or with status 500 (Internal Server Error) if the invoiceDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the invoiceDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/invoices")

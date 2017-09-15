@@ -71,7 +71,7 @@ public class ProviderResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ProviderResource providerResource = new ProviderResource(providerService);
+        final ProviderResource providerResource = new ProviderResource(providerService);
         this.restProviderMockMvc = MockMvcBuilders.standaloneSetup(providerResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -129,7 +129,7 @@ public class ProviderResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(providerDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Provider in the database
         List<Provider> providerList = providerRepository.findAll();
         assertThat(providerList).hasSize(databaseSizeBeforeCreate);
     }

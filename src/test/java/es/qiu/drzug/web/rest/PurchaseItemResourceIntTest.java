@@ -71,7 +71,7 @@ public class PurchaseItemResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PurchaseItemResource purchaseItemResource = new PurchaseItemResource(purchaseItemService);
+        final PurchaseItemResource purchaseItemResource = new PurchaseItemResource(purchaseItemService);
         this.restPurchaseItemMockMvc = MockMvcBuilders.standaloneSetup(purchaseItemResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -129,7 +129,7 @@ public class PurchaseItemResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(purchaseItemDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the PurchaseItem in the database
         List<PurchaseItem> purchaseItemList = purchaseItemRepository.findAll();
         assertThat(purchaseItemList).hasSize(databaseSizeBeforeCreate);
     }

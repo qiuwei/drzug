@@ -1,19 +1,21 @@
+import { BaseEntity } from './../../shared';
 
-const enum ProductType {
+export const enum ProductType {
     'SERVICE',
     'PRODUCT'
+}
 
-};
-export class ProductMysuffix {
+export class ProductMysuffix implements BaseEntity {
     constructor(
         public id?: number,
         public name?: string,
+        public imageContentType?: string,
         public image?: any,
         public description?: any,
         public suggestedPrice?: number,
         public type?: ProductType,
         public sourceTaxId?: number,
-        public providerId?: number,
+        public providers?: BaseEntity[],
     ) {
     }
 }

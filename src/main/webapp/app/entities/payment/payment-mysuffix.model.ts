@@ -1,10 +1,11 @@
+import { BaseEntity } from './../../shared';
 
-const enum Unit {
+export const enum Unit {
     'CNY',
     'EURO'
+}
 
-};
-export class PaymentMysuffix {
+export class PaymentMysuffix implements BaseEntity {
     constructor(
         public id?: number,
         public date?: any,

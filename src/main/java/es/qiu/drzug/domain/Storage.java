@@ -27,6 +27,7 @@ public class Storage implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -47,6 +48,7 @@ public class Storage implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

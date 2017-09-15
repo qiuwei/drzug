@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { PacketMysuffix } from './packet-mysuffix.model';
 import { PacketMysuffixPopupService } from './packet-mysuffix-popup.service';
@@ -19,23 +19,21 @@ import { ResponseWrapper } from '../../shared';
 export class PacketMysuffixDialogComponent implements OnInit {
 
     packet: PacketMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     destinations: StorageMysuffix[];
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private packetService: PacketMysuffixService,
         private storageService: StorageMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.storageService
             .query({filter: 'packet-is-null'})
             .subscribe((res: ResponseWrapper) => {
@@ -50,6 +48,7 @@ export class PacketMysuffixDialogComponent implements OnInit {
                 }
             }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -58,40 +57,29 @@ export class PacketMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.packet.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.packetService.update(this.packet), false);
+                this.packetService.update(this.packet));
         } else {
             this.subscribeToSaveResponse(
-                this.packetService.create(this.packet), true);
+                this.packetService.create(this.packet));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<PacketMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<PacketMysuffix>) {
         result.subscribe((res: PacketMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: PacketMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.packet.created'
-            : 'drzugApp.packet.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: PacketMysuffix) {
         this.eventManager.broadcast({ name: 'packetListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -106,7 +94,6 @@ export class PacketMysuffixDialogComponent implements OnInit {
 })
 export class PacketMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -117,11 +104,11 @@ export class PacketMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.packetPopupService
-                    .open(PacketMysuffixDialogComponent, params['id']);
+                this.packetPopupService
+                    .open(PacketMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.packetPopupService
-                    .open(PacketMysuffixDialogComponent);
+                this.packetPopupService
+                    .open(PacketMysuffixDialogComponent as Component);
             }
         });
     }

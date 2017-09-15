@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { PaymentMysuffix } from './payment-mysuffix.model';
 import { PaymentMysuffixPopupService } from './payment-mysuffix-popup.service';
@@ -17,21 +17,20 @@ import { PaymentMysuffixService } from './payment-mysuffix.service';
 export class PaymentMysuffixDialogComponent implements OnInit {
 
     payment: PaymentMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private paymentService: PaymentMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,40 +39,29 @@ export class PaymentMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.payment.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.paymentService.update(this.payment), false);
+                this.paymentService.update(this.payment));
         } else {
             this.subscribeToSaveResponse(
-                this.paymentService.create(this.payment), true);
+                this.paymentService.create(this.payment));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<PaymentMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<PaymentMysuffix>) {
         result.subscribe((res: PaymentMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: PaymentMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.payment.created'
-            : 'drzugApp.payment.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: PaymentMysuffix) {
         this.eventManager.broadcast({ name: 'paymentListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 }
@@ -84,7 +72,6 @@ export class PaymentMysuffixDialogComponent implements OnInit {
 })
 export class PaymentMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -95,11 +82,11 @@ export class PaymentMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.paymentPopupService
-                    .open(PaymentMysuffixDialogComponent, params['id']);
+                this.paymentPopupService
+                    .open(PaymentMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.paymentPopupService
-                    .open(PaymentMysuffixDialogComponent);
+                this.paymentPopupService
+                    .open(PaymentMysuffixDialogComponent as Component);
             }
         });
     }

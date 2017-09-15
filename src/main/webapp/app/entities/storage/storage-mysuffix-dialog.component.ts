@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { StorageMysuffix } from './storage-mysuffix.model';
 import { StorageMysuffixPopupService } from './storage-mysuffix-popup.service';
@@ -17,21 +17,20 @@ import { StorageMysuffixService } from './storage-mysuffix.service';
 export class StorageMysuffixDialogComponent implements OnInit {
 
     storage: StorageMysuffix;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private storageService: StorageMysuffixService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,40 +39,29 @@ export class StorageMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.storage.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.storageService.update(this.storage), false);
+                this.storageService.update(this.storage));
         } else {
             this.subscribeToSaveResponse(
-                this.storageService.create(this.storage), true);
+                this.storageService.create(this.storage));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<StorageMysuffix>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<StorageMysuffix>) {
         result.subscribe((res: StorageMysuffix) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
-    private onSaveSuccess(result: StorageMysuffix, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'drzugApp.storage.created'
-            : 'drzugApp.storage.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: StorageMysuffix) {
         this.eventManager.broadcast({ name: 'storageListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 }
@@ -84,7 +72,6 @@ export class StorageMysuffixDialogComponent implements OnInit {
 })
 export class StorageMysuffixPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -95,11 +82,11 @@ export class StorageMysuffixPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.storagePopupService
-                    .open(StorageMysuffixDialogComponent, params['id']);
+                this.storagePopupService
+                    .open(StorageMysuffixDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.storagePopupService
-                    .open(StorageMysuffixDialogComponent);
+                this.storagePopupService
+                    .open(StorageMysuffixDialogComponent as Component);
             }
         });
     }

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService, EventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { InvoiceItemMysuffix } from './invoice-item-mysuffix.model';
 import { InvoiceItemMysuffixPopupService } from './invoice-item-mysuffix-popup.service';
@@ -19,8 +19,7 @@ export class InvoiceItemMysuffixDeleteDialogComponent {
     constructor(
         private invoiceItemService: InvoiceItemMysuffixService,
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 
@@ -36,7 +35,6 @@ export class InvoiceItemMysuffixDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('drzugApp.invoiceItem.deleted', { param : id }, null);
     }
 }
 
@@ -46,7 +44,6 @@ export class InvoiceItemMysuffixDeleteDialogComponent {
 })
 export class InvoiceItemMysuffixDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -56,8 +53,8 @@ export class InvoiceItemMysuffixDeletePopupComponent implements OnInit, OnDestro
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.invoiceItemPopupService
-                .open(InvoiceItemMysuffixDeleteDialogComponent, params['id']);
+            this.invoiceItemPopupService
+                .open(InvoiceItemMysuffixDeleteDialogComponent as Component, params['id']);
         });
     }
 

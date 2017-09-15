@@ -76,7 +76,7 @@ public class PacketResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PacketResource packetResource = new PacketResource(packetService);
+        final PacketResource packetResource = new PacketResource(packetService);
         this.restPacketMockMvc = MockMvcBuilders.standaloneSetup(packetResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -136,7 +136,7 @@ public class PacketResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(packetDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Packet in the database
         List<Packet> packetList = packetRepository.findAll();
         assertThat(packetList).hasSize(databaseSizeBeforeCreate);
     }
