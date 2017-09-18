@@ -224,7 +224,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserWithAuthorities(Long id) {
+    public User getUserWithAuthorities(UUID id) {
         return userRepository.findOneWithAuthoritiesById(id);
     }
 
