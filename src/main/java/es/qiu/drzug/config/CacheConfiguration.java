@@ -63,7 +63,6 @@ public class CacheConfiguration {
             cm.createCache(es.qiu.drzug.domain.PurchaseItem.class.getName(), jcacheConfiguration);
             cm.createCache(es.qiu.drzug.domain.Storage.class.getName(), jcacheConfiguration);
             cm.createCache(es.qiu.drzug.domain.Tax.class.getName(), jcacheConfiguration);
-            cm.createCache(es.qiu.drzug.domain.Modules.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

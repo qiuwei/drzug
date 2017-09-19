@@ -31,6 +31,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DrzugApp.class)
 public class UserResourceIntTest {
 
-    private static final Long DEFAULT_ID = 1L;
+    private static final UUID DEFAULT_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
     private static final String DEFAULT_LOGIN = "johndoe";
     private static final String UPDATED_LOGIN = "jhipster";
@@ -186,7 +187,7 @@ public class UserResourceIntTest {
         Set<String> authorities = new HashSet<>();
         authorities.add("ROLE_USER");
         ManagedUserVM managedUserVM = new ManagedUserVM(
-            1L,
+            UUID.fromString("00000000-0000-0000-0000-000000000001"),
             DEFAULT_LOGIN,
             DEFAULT_PASSWORD,
             DEFAULT_FIRSTNAME,
@@ -539,11 +540,11 @@ public class UserResourceIntTest {
     public void testUserEquals() throws Exception {
         TestUtil.equalsVerifier(User.class);
         User user1 = new User();
-        user1.setId(1L);
+        user1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         User user2 = new User();
         user2.setId(user1.getId());
         assertThat(user1).isEqualTo(user2);
-        user2.setId(2L);
+        user2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(user1).isNotEqualTo(user2);
         user1.setId(null);
         assertThat(user1).isNotEqualTo(user2);
