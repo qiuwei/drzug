@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.InvoiceItemDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity InvoiceItem and its DTO InvoiceItemDTO.
@@ -26,7 +27,7 @@ public interface InvoiceItemMapper extends EntityMapper <InvoiceItemDTO, Invoice
 
     @Mapping(source = "taxId", target = "tax")
     InvoiceItem toEntity(InvoiceItemDTO invoiceItemDTO); 
-    default InvoiceItem fromId(Long id) {
+    default InvoiceItem fromId(UUID id) {
         if (id == null) {
             return null;
         }

@@ -27,7 +27,7 @@ export class PacketItemMysuffixDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id:  number) {
+    confirmDelete(id: number) {
         this.packetItemService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'packetItemListModification',

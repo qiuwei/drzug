@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 import javax.persistence.Lob;
 import es.qiu.drzug.domain.enumeration.ProductType;
 
@@ -15,7 +17,7 @@ import es.qiu.drzug.domain.enumeration.ProductType;
  */
 public class ProductDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
     private String name;
@@ -31,17 +33,17 @@ public class ProductDTO implements Serializable {
 
     private ProductType type;
 
-    private Long sourceTaxId;
+    private UUID sourceTaxId;
 
     private String sourceTaxName;
 
     private Set<ProviderDTO> providers = new HashSet<>();
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -93,11 +95,11 @@ public class ProductDTO implements Serializable {
         this.type = type;
     }
 
-    public Long getSourceTaxId() {
+    public UUID getSourceTaxId() {
         return sourceTaxId;
     }
 
-    public void setSourceTaxId(Long taxId) {
+    public void setSourceTaxId(UUID taxId) {
         this.sourceTaxId = taxId;
     }
 

@@ -31,12 +31,12 @@ public interface ProviderService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    ProviderDTO findOne(Long id);
+    ProviderDTO findOne(UUID id);
 
     /**
      *  Delete the "id" provider.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -105,7 +106,7 @@ public class TaxResource {
      */
     @GetMapping("/taxes/{id}")
     @Timed
-    public ResponseEntity<TaxDTO> getTax(@PathVariable Long id) {
+    public ResponseEntity<TaxDTO> getTax(@PathVariable UUID id) {
         log.debug("REST request to get Tax : {}", id);
         TaxDTO taxDTO = taxService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(taxDTO));
@@ -119,7 +120,7 @@ public class TaxResource {
      */
     @DeleteMapping("/taxes/{id}")
     @Timed
-    public ResponseEntity<Void> deleteTax(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTax(@PathVariable UUID id) {
         log.debug("REST request to delete Tax : {}", id);
         taxService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

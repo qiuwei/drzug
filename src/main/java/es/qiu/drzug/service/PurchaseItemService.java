@@ -31,12 +31,12 @@ public interface PurchaseItemService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    PurchaseItemDTO findOne(Long id);
+    PurchaseItemDTO findOne(UUID id);
 
     /**
      *  Delete the "id" purchaseItem.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -125,7 +126,7 @@ public class CustomerResourceIntTest {
         int databaseSizeBeforeCreate = customerRepository.findAll().size();
 
         // Create the Customer with an existing ID
-        customer.setId(1L);
+        customer.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         CustomerDTO customerDTO = customerMapper.toDto(customer);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -187,7 +188,7 @@ public class CustomerResourceIntTest {
         restCustomerMockMvc.perform(get("/api/customers?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().toString())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())));
     }
@@ -202,7 +203,7 @@ public class CustomerResourceIntTest {
         restCustomerMockMvc.perform(get("/api/customers/{id}", customer.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(customer.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(customer.getId().toString()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()));
     }
@@ -211,7 +212,7 @@ public class CustomerResourceIntTest {
     @Transactional
     public void getNonExistingCustomer() throws Exception {
         // Get the customer
-        restCustomerMockMvc.perform(get("/api/customers/{id}", Long.MAX_VALUE))
+        restCustomerMockMvc.perform(get("/api/customers/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -283,11 +284,11 @@ public class CustomerResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Customer.class);
         Customer customer1 = new Customer();
-        customer1.setId(1L);
+        customer1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Customer customer2 = new Customer();
         customer2.setId(customer1.getId());
         assertThat(customer1).isEqualTo(customer2);
-        customer2.setId(2L);
+        customer2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(customer1).isNotEqualTo(customer2);
         customer1.setId(null);
         assertThat(customer1).isNotEqualTo(customer2);
@@ -298,12 +299,12 @@ public class CustomerResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(CustomerDTO.class);
         CustomerDTO customerDTO1 = new CustomerDTO();
-        customerDTO1.setId(1L);
+        customerDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         CustomerDTO customerDTO2 = new CustomerDTO();
         assertThat(customerDTO1).isNotEqualTo(customerDTO2);
         customerDTO2.setId(customerDTO1.getId());
         assertThat(customerDTO1).isEqualTo(customerDTO2);
-        customerDTO2.setId(2L);
+        customerDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(customerDTO1).isNotEqualTo(customerDTO2);
         customerDTO1.setId(null);
         assertThat(customerDTO1).isNotEqualTo(customerDTO2);
@@ -312,7 +313,7 @@ public class CustomerResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(customerMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(customerMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(customerMapper.fromId(null)).isNull();
     }
 }

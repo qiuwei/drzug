@@ -1,6 +1,5 @@
 package es.qiu.drzug.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,6 +8,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A InvoiceItem.
@@ -21,46 +21,46 @@ public class InvoiceItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @NotNull
     @Column(name = "count", nullable = false)
-    private Long count;
+    private UUID count;
 
     @Column(name = "discount", precision=10, scale=2)
     private BigDecimal discount;
 
     @ManyToOne
-    @JsonIgnore
     private Invoice invoice;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private Product product;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private Tax tax;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getCount() {
+    public UUID getCount() {
         return count;
     }
 
-    public InvoiceItem count(Long count) {
+    public InvoiceItem count(UUID count) {
         this.count = count;
         return this;
     }
 
-    public void setCount(Long count) {
+    public void setCount(UUID count) {
         this.count = count;
     }
 

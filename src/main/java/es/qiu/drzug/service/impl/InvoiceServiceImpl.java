@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.InvoiceDTO;
 import es.qiu.drzug.service.mapper.InvoiceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class InvoiceServiceImpl implements InvoiceService{
      */
     @Override
     @Transactional(readOnly = true)
-    public InvoiceDTO findOne(Long id) {
+    public InvoiceDTO findOne(UUID id) {
         log.debug("Request to get Invoice : {}", id);
         Invoice invoice = invoiceRepository.findOne(id);
         return invoiceMapper.toDto(invoice);
@@ -79,7 +80,7 @@ public class InvoiceServiceImpl implements InvoiceService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete Invoice : {}", id);
         invoiceRepository.delete(id);
     }

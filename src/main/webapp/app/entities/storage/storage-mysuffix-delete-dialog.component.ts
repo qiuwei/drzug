@@ -27,7 +27,7 @@ export class StorageMysuffixDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id:  number) {
+    confirmDelete(id: number) {
         this.storageService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'storageListModification',

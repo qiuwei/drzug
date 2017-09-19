@@ -18,7 +18,7 @@
     -->
     <changeSet id="20170818143431-1" author="jhipster">
         <createTable tableName="invoice">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="uuid" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="create_at" type="timestamp">
@@ -29,7 +29,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="customer_id" type="bigint">
+            <column name="customer_id" type="uuid">
                 <constraints nullable="true" />
             </column>
 

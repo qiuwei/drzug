@@ -1,6 +1,5 @@
 package es.qiu.drzug.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -23,9 +22,8 @@ public class Invoice implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @NotNull
     @Column(name = "create_at", nullable = false)
@@ -37,17 +35,17 @@ public class Invoice implements Serializable {
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<InvoiceItem> invoiceItems = new ArrayList<>();
+    private Set<InvoiceItem> invoiceItems = new HashSet<>();
 
     @ManyToOne
     private Customer customer;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -77,11 +75,11 @@ public class Invoice implements Serializable {
         this.status = status;
     }
 
-    public List<InvoiceItem> getInvoiceItems() {
+    public Set<InvoiceItem> getInvoiceItems() {
         return invoiceItems;
     }
 
-    public Invoice invoiceItems(List<InvoiceItem> invoiceItems) {
+    public Invoice invoiceItems(Set<InvoiceItem> invoiceItems) {
         this.invoiceItems = invoiceItems;
         return this;
     }
@@ -98,7 +96,7 @@ public class Invoice implements Serializable {
         return this;
     }
 
-    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
+    public void setInvoiceItems(Set<InvoiceItem> invoiceItems) {
         this.invoiceItems = invoiceItems;
     }
 

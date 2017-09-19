@@ -27,7 +27,7 @@ export class ProviderMysuffixDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id:  number) {
+    confirmDelete(id: number) {
         this.providerService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'providerListModification',

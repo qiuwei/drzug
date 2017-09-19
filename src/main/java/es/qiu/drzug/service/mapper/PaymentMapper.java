@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.PaymentDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity Payment and its DTO PaymentDTO.
@@ -12,7 +13,7 @@ import org.mapstruct.*;
 public interface PaymentMapper extends EntityMapper <PaymentDTO, Payment> {
     
     
-    default Payment fromId(Long id) {
+    default Payment fromId(UUID id) {
         if (id == null) {
             return null;
         }

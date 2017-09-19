@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.PurchaseItemDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity PurchaseItem and its DTO PurchaseItemDTO.
@@ -21,7 +22,7 @@ public interface PurchaseItemMapper extends EntityMapper <PurchaseItemDTO, Purch
 
     @Mapping(source = "productId", target = "product")
     PurchaseItem toEntity(PurchaseItemDTO purchaseItemDTO); 
-    default PurchaseItem fromId(Long id) {
+    default PurchaseItem fromId(UUID id) {
         if (id == null) {
             return null;
         }

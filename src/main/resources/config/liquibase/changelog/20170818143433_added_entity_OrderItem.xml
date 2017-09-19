@@ -18,20 +18,22 @@
     -->
     <changeSet id="20170818143433-1" author="jhipster">
         <createTable tableName="order_item">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="uuid" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="count" type="bigint">
+            <column name="count" type="uuid">
                 <constraints nullable="false" />
             </column>
 
             <column name="sale_price" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
-            <column name="product_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+
+            <column name="product_id" type="uuid">
+                <constraints nullable="true" />
             </column>
-            <column name="order_id" type="bigint">
+
+            <column name="order_id" type="uuid">
                 <constraints nullable="true" />
             </column>
 

@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.ProviderDTO;
 import es.qiu.drzug.service.mapper.ProviderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class ProviderServiceImpl implements ProviderService{
      */
     @Override
     @Transactional(readOnly = true)
-    public ProviderDTO findOne(Long id) {
+    public ProviderDTO findOne(UUID id) {
         log.debug("Request to get Provider : {}", id);
         Provider provider = providerRepository.findOne(id);
         return providerMapper.toDto(provider);
@@ -79,7 +80,7 @@ public class ProviderServiceImpl implements ProviderService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete Provider : {}", id);
         providerRepository.delete(id);
     }

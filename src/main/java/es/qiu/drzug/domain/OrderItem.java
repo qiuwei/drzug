@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A OrderItem.
@@ -20,13 +21,12 @@ public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @NotNull
     @Column(name = "count", nullable = false)
-    private Long count;
+    private UUID count;
 
     @Column(name = "sale_price", precision=10, scale=2)
     private BigDecimal salePrice;
@@ -38,24 +38,24 @@ public class OrderItem implements Serializable {
     private Order order;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getCount() {
+    public UUID getCount() {
         return count;
     }
 
-    public OrderItem count(Long count) {
+    public OrderItem count(UUID count) {
         this.count = count;
         return this;
     }
 
-    public void setCount(Long count) {
+    public void setCount(UUID count) {
         this.count = count;
     }
 

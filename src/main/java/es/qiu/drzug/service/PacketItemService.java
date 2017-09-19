@@ -31,12 +31,12 @@ public interface PacketItemService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    PacketItemDTO findOne(Long id);
+    PacketItemDTO findOne(UUID id);
 
     /**
      *  Delete the "id" packetItem.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

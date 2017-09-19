@@ -21,13 +21,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
  * REST controller for managing PacketItem.
  */
 @RestController
-@RequestMapping("/api/packets/")
+@RequestMapping("/api")
 public class PacketItemResource {
 
     private final Logger log = LoggerFactory.getLogger(PacketItemResource.class);
@@ -47,7 +48,7 @@ public class PacketItemResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new packetItemDTO, or with status 400 (Bad Request) if the packetItem has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("{packet_id}/packet-items")
+    @PostMapping("/packet-items")
     @Timed
     public ResponseEntity<PacketItemDTO> createPacketItem(@Valid @RequestBody PacketItemDTO packetItemDTO) throws URISyntaxException {
         log.debug("REST request to save PacketItem : {}", packetItemDTO);
@@ -69,7 +70,7 @@ public class PacketItemResource {
      * or with status 500 (Internal Server Error) if the packetItemDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("{packet_id}/packet-items")
+    @PutMapping("/packet-items")
     @Timed
     public ResponseEntity<PacketItemDTO> updatePacketItem(@Valid @RequestBody PacketItemDTO packetItemDTO) throws URISyntaxException {
         log.debug("REST request to update PacketItem : {}", packetItemDTO);
@@ -88,7 +89,7 @@ public class PacketItemResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of packetItems in body
      */
-    @GetMapping("{packet_id}/packet-items")
+    @GetMapping("/packet-items")
     @Timed
     public ResponseEntity<List<PacketItemDTO>> getAllPacketItems(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of PacketItems");
@@ -103,9 +104,9 @@ public class PacketItemResource {
      * @param id the id of the packetItemDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the packetItemDTO, or with status 404 (Not Found)
      */
-    @GetMapping("{packet_id}/packet-items/{id}")
+    @GetMapping("/packet-items/{id}")
     @Timed
-    public ResponseEntity<PacketItemDTO> getPacketItem(@PathVariable Long id) {
+    public ResponseEntity<PacketItemDTO> getPacketItem(@PathVariable UUID id) {
         log.debug("REST request to get PacketItem : {}", id);
         PacketItemDTO packetItemDTO = packetItemService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(packetItemDTO));
@@ -117,9 +118,9 @@ public class PacketItemResource {
      * @param id the id of the packetItemDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("{packet_id}/packet-items/{id}")
+    @DeleteMapping("/packet-items/{id}")
     @Timed
-    public ResponseEntity<Void> deletePacketItem(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePacketItem(@PathVariable UUID id) {
         log.debug("REST request to delete PacketItem : {}", id);
         packetItemService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

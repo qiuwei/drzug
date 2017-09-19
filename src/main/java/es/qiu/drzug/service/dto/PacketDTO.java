@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 import es.qiu.drzug.domain.enumeration.PacketStatus;
 
 /**
@@ -14,7 +16,7 @@ import es.qiu.drzug.domain.enumeration.PacketStatus;
  */
 public class PacketDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
     private BigDecimal weight;
@@ -22,15 +24,15 @@ public class PacketDTO implements Serializable {
     @NotNull
     private PacketStatus status;
 
-    private Long destinationId;
+    private UUID destinationId;
 
     private String destinationName;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -50,11 +52,11 @@ public class PacketDTO implements Serializable {
         this.status = status;
     }
 
-    public Long getDestinationId() {
+    public UUID getDestinationId() {
         return destinationId;
     }
 
-    public void setDestinationId(Long storageId) {
+    public void setDestinationId(UUID storageId) {
         this.destinationId = storageId;
     }
 

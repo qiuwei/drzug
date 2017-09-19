@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.Product;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+import java.util.UUID;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 
@@ -12,11 +13,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("select distinct product from Product product left join fetch product.providers")
     List<Product> findAllWithEagerRelationships();
 
     @Query("select product from Product product left join fetch product.providers where product.id =:id")
-    Product findOneWithEagerRelationships(@Param("id") Long id);
+    Product findOneWithEagerRelationships(@Param("id") UUID id);
 
 }

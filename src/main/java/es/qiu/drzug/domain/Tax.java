@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A Tax.
@@ -20,9 +21,8 @@ public class Tax implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
+    @GeneratedValue
+    private UUID id;
 
     @NotNull
     @Column(name = "name", nullable = false)
@@ -33,11 +33,11 @@ public class Tax implements Serializable {
     private BigDecimal rate;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

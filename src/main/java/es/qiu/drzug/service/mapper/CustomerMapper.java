@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.CustomerDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity Customer and its DTO CustomerDTO.
@@ -13,7 +14,7 @@ public interface CustomerMapper extends EntityMapper <CustomerDTO, Customer> {
     
     @Mapping(target = "invoices", ignore = true)
     Customer toEntity(CustomerDTO customerDTO); 
-    default Customer fromId(Long id) {
+    default Customer fromId(UUID id) {
         if (id == null) {
             return null;
         }

@@ -7,42 +7,44 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 
 /**
  * A DTO for the InvoiceItem entity.
  */
 public class InvoiceItemDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
-    private Long count;
+    private UUID count;
 
     private BigDecimal discount;
 
-    private Long invoiceId;
+    private UUID invoiceId;
 
-    private Long productId;
+    private UUID productId;
 
     private String productName;
 
-    private Long taxId;
+    private UUID taxId;
 
     private String taxName;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getCount() {
+    public UUID getCount() {
         return count;
     }
 
-    public void setCount(Long count) {
+    public void setCount(UUID count) {
         this.count = count;
     }
 
@@ -54,19 +56,19 @@ public class InvoiceItemDTO implements Serializable {
         this.discount = discount;
     }
 
-    public Long getInvoiceId() {
+    public UUID getInvoiceId() {
         return invoiceId;
     }
 
-    public void setInvoiceId(Long invoiceId) {
+    public void setInvoiceId(UUID invoiceId) {
         this.invoiceId = invoiceId;
     }
 
-    public Long getProductId() {
+    public UUID getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(UUID productId) {
         this.productId = productId;
     }
 
@@ -78,11 +80,11 @@ public class InvoiceItemDTO implements Serializable {
         this.productName = productName;
     }
 
-    public Long getTaxId() {
+    public UUID getTaxId() {
         return taxId;
     }
 
-    public void setTaxId(Long taxId) {
+    public void setTaxId(UUID taxId) {
         this.taxId = taxId;
     }
 

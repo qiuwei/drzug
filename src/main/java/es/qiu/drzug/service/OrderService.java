@@ -31,12 +31,12 @@ public interface OrderService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    OrderDTO findOne(Long id);
+    OrderDTO findOne(UUID id);
 
     /**
      *  Delete the "id" order.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

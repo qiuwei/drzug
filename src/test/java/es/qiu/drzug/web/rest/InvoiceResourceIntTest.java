@@ -29,6 +29,7 @@ import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.UUID;
 
 import static es.qiu.drzug.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,7 +132,7 @@ public class InvoiceResourceIntTest {
         int databaseSizeBeforeCreate = invoiceRepository.findAll().size();
 
         // Create the Invoice with an existing ID
-        invoice.setId(1L);
+        invoice.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         InvoiceDTO invoiceDTO = invoiceMapper.toDto(invoice);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -174,7 +175,7 @@ public class InvoiceResourceIntTest {
         restInvoiceMockMvc.perform(get("/api/invoices?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(invoice.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(invoice.getId().toString())))
             .andExpect(jsonPath("$.[*].createAt").value(hasItem(sameInstant(DEFAULT_CREATE_AT))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
@@ -189,7 +190,7 @@ public class InvoiceResourceIntTest {
         restInvoiceMockMvc.perform(get("/api/invoices/{id}", invoice.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(invoice.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(invoice.getId().toString()))
             .andExpect(jsonPath("$.createAt").value(sameInstant(DEFAULT_CREATE_AT)))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
@@ -198,7 +199,7 @@ public class InvoiceResourceIntTest {
     @Transactional
     public void getNonExistingInvoice() throws Exception {
         // Get the invoice
-        restInvoiceMockMvc.perform(get("/api/invoices/{id}", Long.MAX_VALUE))
+        restInvoiceMockMvc.perform(get("/api/invoices/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -270,11 +271,11 @@ public class InvoiceResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Invoice.class);
         Invoice invoice1 = new Invoice();
-        invoice1.setId(1L);
+        invoice1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Invoice invoice2 = new Invoice();
         invoice2.setId(invoice1.getId());
         assertThat(invoice1).isEqualTo(invoice2);
-        invoice2.setId(2L);
+        invoice2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(invoice1).isNotEqualTo(invoice2);
         invoice1.setId(null);
         assertThat(invoice1).isNotEqualTo(invoice2);
@@ -285,12 +286,12 @@ public class InvoiceResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(InvoiceDTO.class);
         InvoiceDTO invoiceDTO1 = new InvoiceDTO();
-        invoiceDTO1.setId(1L);
+        invoiceDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         InvoiceDTO invoiceDTO2 = new InvoiceDTO();
         assertThat(invoiceDTO1).isNotEqualTo(invoiceDTO2);
         invoiceDTO2.setId(invoiceDTO1.getId());
         assertThat(invoiceDTO1).isEqualTo(invoiceDTO2);
-        invoiceDTO2.setId(2L);
+        invoiceDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(invoiceDTO1).isNotEqualTo(invoiceDTO2);
         invoiceDTO1.setId(null);
         assertThat(invoiceDTO1).isNotEqualTo(invoiceDTO2);
@@ -299,7 +300,7 @@ public class InvoiceResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(invoiceMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(invoiceMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(invoiceMapper.fromId(null)).isNull();
     }
 }

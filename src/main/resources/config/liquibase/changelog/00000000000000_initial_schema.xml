@@ -19,7 +19,7 @@
     -->
     <changeSet id="00000000000001" author="jhipster">
         <createTable tableName="jhi_user">
-            <column name="id" type="uuid" >
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="login" type="varchar(100)">
@@ -68,7 +68,7 @@
         </createTable>
 
         <createTable tableName="jhi_user_authority">
-            <column name="user_id" type="uuid">
+            <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="authority_name" type="varchar(50)">
@@ -108,7 +108,7 @@
                   separator=";"
                   tableName="jhi_user_authority"/>
         <createTable tableName="jhi_persistent_audit_event">
-            <column name="event_id" type="uuid" >
+            <column name="event_id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="principal" type="varchar(100)">
@@ -119,7 +119,7 @@
         </createTable>
 
         <createTable tableName="jhi_persistent_audit_evt_data">
-            <column name="event_id" type="uuid">
+            <column name="event_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(150)">
@@ -139,7 +139,7 @@
         <createIndex indexName="idx_persistent_audit_evt_data"
                      tableName="jhi_persistent_audit_evt_data"
                      unique="false">
-            <column name="event_id" type="uuid"/>
+            <column name="event_id" type="bigint"/>
         </createIndex>
 
         <addForeignKeyConstraint baseColumnNames="event_id"
@@ -150,7 +150,7 @@
 
         <!-- Social -->
         <createTable tableName="jhi_social_user_connection">
-            <column name="id" type="uuid" >
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="varchar(255)">
@@ -162,7 +162,7 @@
             <column name="provider_user_id" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="rank" type="uuid">
+            <column name="rank" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="display_name" type="varchar(255)"/>
@@ -173,7 +173,7 @@
             </column>
             <column name="secret" type="varchar(255)"/>
             <column name="refresh_token" type="varchar(255)"/>
-            <column name="expire_time" type="uuid"/>
+            <column name="expire_time" type="bigint"/>
         </createTable>
 
         <addUniqueConstraint tableName="jhi_social_user_connection" columnNames="user_id, provider_id, provider_user_id"/>

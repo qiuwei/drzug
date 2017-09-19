@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.StorageDTO;
 import es.qiu.drzug.service.mapper.StorageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class StorageServiceImpl implements StorageService{
      */
     @Override
     @Transactional(readOnly = true)
-    public StorageDTO findOne(Long id) {
+    public StorageDTO findOne(UUID id) {
         log.debug("Request to get Storage : {}", id);
         Storage storage = storageRepository.findOne(id);
         return storageMapper.toDto(storage);
@@ -79,7 +80,7 @@ public class StorageServiceImpl implements StorageService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete Storage : {}", id);
         storageRepository.delete(id);
     }

@@ -18,7 +18,7 @@
     -->
     <changeSet id="20170818143441-1" author="jhipster">
         <createTable tableName="tax">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="uuid" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">

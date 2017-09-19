@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 import es.qiu.drzug.domain.enumeration.InvoiceStatus;
 
 /**
@@ -14,22 +16,22 @@ import es.qiu.drzug.domain.enumeration.InvoiceStatus;
  */
 public class InvoiceDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
     private ZonedDateTime createAt;
 
     private InvoiceStatus status;
 
-    private Long customerId;
+    private UUID customerId;
 
     private String customerFirstName;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -49,11 +51,11 @@ public class InvoiceDTO implements Serializable {
         this.status = status;
     }
 
-    public Long getCustomerId() {
+    public UUID getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(UUID customerId) {
         this.customerId = customerId;
     }
 

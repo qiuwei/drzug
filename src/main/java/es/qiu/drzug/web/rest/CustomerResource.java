@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -105,7 +106,7 @@ public class CustomerResource {
      */
     @GetMapping("/customers/{id}")
     @Timed
-    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long id) {
+    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable UUID id) {
         log.debug("REST request to get Customer : {}", id);
         CustomerDTO customerDTO = customerService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(customerDTO));
@@ -119,7 +120,7 @@ public class CustomerResource {
      */
     @DeleteMapping("/customers/{id}")
     @Timed
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable UUID id) {
         log.debug("REST request to delete Customer : {}", id);
         customerService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

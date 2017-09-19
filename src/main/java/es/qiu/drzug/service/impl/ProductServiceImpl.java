@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.ProductDTO;
 import es.qiu.drzug.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements ProductService{
      */
     @Override
     @Transactional(readOnly = true)
-    public ProductDTO findOne(Long id) {
+    public ProductDTO findOne(UUID id) {
         log.debug("Request to get Product : {}", id);
         Product product = productRepository.findOneWithEagerRelationships(id);
         return productMapper.toDto(product);
@@ -79,7 +80,7 @@ public class ProductServiceImpl implements ProductService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete Product : {}", id);
         productRepository.delete(id);
     }

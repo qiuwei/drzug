@@ -27,7 +27,7 @@ export class ProductMysuffixDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id:  number) {
+    confirmDelete(id: number) {
         this.productService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'productListModification',

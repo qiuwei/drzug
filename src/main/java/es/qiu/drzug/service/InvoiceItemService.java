@@ -23,8 +23,7 @@ public interface InvoiceItemService {
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    Page<InvoiceItemDTO> findAllByInvoice_Id(Pageable pageable, Long invoiceId);
-
+    Page<InvoiceItemDTO> findAll(Pageable pageable);
 
     /**
      *  Get the "id" invoiceItem.
@@ -32,12 +31,12 @@ public interface InvoiceItemService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    InvoiceItemDTO findOne(Long id);
+    InvoiceItemDTO findOne(UUID id);
 
     /**
      *  Delete the "id" invoiceItem.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

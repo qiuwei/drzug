@@ -30,6 +30,7 @@ import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.UUID;
 
 import static es.qiu.drzug.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -137,7 +138,7 @@ public class PaymentResourceIntTest {
         int databaseSizeBeforeCreate = paymentRepository.findAll().size();
 
         // Create the Payment with an existing ID
-        payment.setId(1L);
+        payment.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -218,9 +219,9 @@ public class PaymentResourceIntTest {
         restPaymentMockMvc.perform(get("/api/payments?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(payment.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(payment.getId().toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.toString())))
             .andExpect(jsonPath("$.[*].unit").value(hasItem(DEFAULT_UNIT.toString())));
     }
 
@@ -234,9 +235,9 @@ public class PaymentResourceIntTest {
         restPaymentMockMvc.perform(get("/api/payments/{id}", payment.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(payment.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(payment.getId().toString()))
             .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
-            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
+            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.toString()))
             .andExpect(jsonPath("$.unit").value(DEFAULT_UNIT.toString()));
     }
 
@@ -244,7 +245,7 @@ public class PaymentResourceIntTest {
     @Transactional
     public void getNonExistingPayment() throws Exception {
         // Get the payment
-        restPaymentMockMvc.perform(get("/api/payments/{id}", Long.MAX_VALUE))
+        restPaymentMockMvc.perform(get("/api/payments/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -318,11 +319,11 @@ public class PaymentResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Payment.class);
         Payment payment1 = new Payment();
-        payment1.setId(1L);
+        payment1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Payment payment2 = new Payment();
         payment2.setId(payment1.getId());
         assertThat(payment1).isEqualTo(payment2);
-        payment2.setId(2L);
+        payment2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(payment1).isNotEqualTo(payment2);
         payment1.setId(null);
         assertThat(payment1).isNotEqualTo(payment2);
@@ -333,12 +334,12 @@ public class PaymentResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(PaymentDTO.class);
         PaymentDTO paymentDTO1 = new PaymentDTO();
-        paymentDTO1.setId(1L);
+        paymentDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PaymentDTO paymentDTO2 = new PaymentDTO();
         assertThat(paymentDTO1).isNotEqualTo(paymentDTO2);
         paymentDTO2.setId(paymentDTO1.getId());
         assertThat(paymentDTO1).isEqualTo(paymentDTO2);
-        paymentDTO2.setId(2L);
+        paymentDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(paymentDTO1).isNotEqualTo(paymentDTO2);
         paymentDTO1.setId(null);
         assertThat(paymentDTO1).isNotEqualTo(paymentDTO2);
@@ -347,7 +348,7 @@ public class PaymentResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(paymentMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(paymentMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(paymentMapper.fromId(null)).isNull();
     }
 }

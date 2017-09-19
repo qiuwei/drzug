@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -120,7 +121,7 @@ public class ProviderResourceIntTest {
         int databaseSizeBeforeCreate = providerRepository.findAll().size();
 
         // Create the Provider with an existing ID
-        provider.setId(1L);
+        provider.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         ProviderDTO providerDTO = providerMapper.toDto(provider);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -163,7 +164,7 @@ public class ProviderResourceIntTest {
         restProviderMockMvc.perform(get("/api/providers?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(provider.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(provider.getId().toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
 
@@ -177,7 +178,7 @@ public class ProviderResourceIntTest {
         restProviderMockMvc.perform(get("/api/providers/{id}", provider.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(provider.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(provider.getId().toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
 
@@ -185,7 +186,7 @@ public class ProviderResourceIntTest {
     @Transactional
     public void getNonExistingProvider() throws Exception {
         // Get the provider
-        restProviderMockMvc.perform(get("/api/providers/{id}", Long.MAX_VALUE))
+        restProviderMockMvc.perform(get("/api/providers/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -255,11 +256,11 @@ public class ProviderResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Provider.class);
         Provider provider1 = new Provider();
-        provider1.setId(1L);
+        provider1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Provider provider2 = new Provider();
         provider2.setId(provider1.getId());
         assertThat(provider1).isEqualTo(provider2);
-        provider2.setId(2L);
+        provider2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(provider1).isNotEqualTo(provider2);
         provider1.setId(null);
         assertThat(provider1).isNotEqualTo(provider2);
@@ -270,12 +271,12 @@ public class ProviderResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(ProviderDTO.class);
         ProviderDTO providerDTO1 = new ProviderDTO();
-        providerDTO1.setId(1L);
+        providerDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         ProviderDTO providerDTO2 = new ProviderDTO();
         assertThat(providerDTO1).isNotEqualTo(providerDTO2);
         providerDTO2.setId(providerDTO1.getId());
         assertThat(providerDTO1).isEqualTo(providerDTO2);
-        providerDTO2.setId(2L);
+        providerDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(providerDTO1).isNotEqualTo(providerDTO2);
         providerDTO1.setId(null);
         assertThat(providerDTO1).isNotEqualTo(providerDTO2);
@@ -284,7 +285,7 @@ public class ProviderResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(providerMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(providerMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(providerMapper.fromId(null)).isNull();
     }
 }

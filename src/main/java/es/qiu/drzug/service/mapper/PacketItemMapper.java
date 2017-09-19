@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.PacketItemDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity PacketItem and its DTO PacketItemDTO.
@@ -16,7 +17,7 @@ public interface PacketItemMapper extends EntityMapper <PacketItemDTO, PacketIte
 
     @Mapping(source = "packetId", target = "packet")
     PacketItem toEntity(PacketItemDTO packetItemDTO); 
-    default PacketItem fromId(Long id) {
+    default PacketItem fromId(UUID id) {
         if (id == null) {
             return null;
         }

@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -105,7 +106,7 @@ public class ProviderResource {
      */
     @GetMapping("/providers/{id}")
     @Timed
-    public ResponseEntity<ProviderDTO> getProvider(@PathVariable Long id) {
+    public ResponseEntity<ProviderDTO> getProvider(@PathVariable UUID id) {
         log.debug("REST request to get Provider : {}", id);
         ProviderDTO providerDTO = providerService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(providerDTO));
@@ -119,7 +120,7 @@ public class ProviderResource {
      */
     @DeleteMapping("/providers/{id}")
     @Timed
-    public ResponseEntity<Void> deleteProvider(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProvider(@PathVariable UUID id) {
         log.debug("REST request to delete Provider : {}", id);
         providerService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

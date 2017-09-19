@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.TaxDTO;
 import es.qiu.drzug.service.mapper.TaxMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class TaxServiceImpl implements TaxService{
      */
     @Override
     @Transactional(readOnly = true)
-    public TaxDTO findOne(Long id) {
+    public TaxDTO findOne(UUID id) {
         log.debug("Request to get Tax : {}", id);
         Tax tax = taxRepository.findOne(id);
         return taxMapper.toDto(tax);
@@ -79,7 +80,7 @@ public class TaxServiceImpl implements TaxService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete Tax : {}", id);
         taxRepository.delete(id);
     }

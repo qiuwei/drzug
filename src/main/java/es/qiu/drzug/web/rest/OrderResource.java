@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -105,7 +106,7 @@ public class OrderResource {
      */
     @GetMapping("/orders/{id}")
     @Timed
-    public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable UUID id) {
         log.debug("REST request to get Order : {}", id);
         OrderDTO orderDTO = orderService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(orderDTO));
@@ -119,7 +120,7 @@ public class OrderResource {
      */
     @DeleteMapping("/orders/{id}")
     @Timed
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOrder(@PathVariable UUID id) {
         log.debug("REST request to delete Order : {}", id);
         orderService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

@@ -27,7 +27,7 @@ export class InvoiceItemMysuffixDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id:  number) {
+    confirmDelete(id: number) {
         this.invoiceItemService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'invoiceItemListModification',

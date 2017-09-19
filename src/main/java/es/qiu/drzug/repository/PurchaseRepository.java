@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.Purchase;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+import java.util.UUID;
 
 
 /**
@@ -11,6 +12,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
+public interface PurchaseRepository extends JpaRepository<Purchase, UUID> {
 
 }

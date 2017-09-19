@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -126,7 +127,7 @@ public class TaxResourceIntTest {
         int databaseSizeBeforeCreate = taxRepository.findAll().size();
 
         // Create the Tax with an existing ID
-        tax.setId(1L);
+        tax.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         TaxDTO taxDTO = taxMapper.toDto(tax);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -188,9 +189,9 @@ public class TaxResourceIntTest {
         restTaxMockMvc.perform(get("/api/taxes?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tax.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tax.getId().toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.intValue())));
+            .andExpect(jsonPath("$.[*].rate").value(hasItem(DEFAULT_RATE.toString())));
     }
 
     @Test
@@ -203,16 +204,16 @@ public class TaxResourceIntTest {
         restTaxMockMvc.perform(get("/api/taxes/{id}", tax.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(tax.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(tax.getId().toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.rate").value(DEFAULT_RATE.intValue()));
+            .andExpect(jsonPath("$.rate").value(DEFAULT_RATE.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingTax() throws Exception {
         // Get the tax
-        restTaxMockMvc.perform(get("/api/taxes/{id}", Long.MAX_VALUE))
+        restTaxMockMvc.perform(get("/api/taxes/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -284,11 +285,11 @@ public class TaxResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Tax.class);
         Tax tax1 = new Tax();
-        tax1.setId(1L);
+        tax1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Tax tax2 = new Tax();
         tax2.setId(tax1.getId());
         assertThat(tax1).isEqualTo(tax2);
-        tax2.setId(2L);
+        tax2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(tax1).isNotEqualTo(tax2);
         tax1.setId(null);
         assertThat(tax1).isNotEqualTo(tax2);
@@ -299,12 +300,12 @@ public class TaxResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(TaxDTO.class);
         TaxDTO taxDTO1 = new TaxDTO();
-        taxDTO1.setId(1L);
+        taxDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         TaxDTO taxDTO2 = new TaxDTO();
         assertThat(taxDTO1).isNotEqualTo(taxDTO2);
         taxDTO2.setId(taxDTO1.getId());
         assertThat(taxDTO1).isEqualTo(taxDTO2);
-        taxDTO2.setId(2L);
+        taxDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(taxDTO1).isNotEqualTo(taxDTO2);
         taxDTO1.setId(null);
         assertThat(taxDTO1).isNotEqualTo(taxDTO2);
@@ -313,7 +314,7 @@ public class TaxResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(taxMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(taxMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(taxMapper.fromId(null)).isNull();
     }
 }

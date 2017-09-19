@@ -21,13 +21,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
  * REST controller for managing InvoiceItem.
  */
 @RestController
-@RequestMapping("/api/invoices/")
+@RequestMapping("/api")
 public class InvoiceItemResource {
 
     private final Logger log = LoggerFactory.getLogger(InvoiceItemResource.class);
@@ -47,15 +48,15 @@ public class InvoiceItemResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new invoiceItemDTO, or with status 400 (Bad Request) if the invoiceItem has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("{invoice_id}/invoice-items")
+    @PostMapping("/invoice-items")
     @Timed
-    public ResponseEntity<InvoiceItemDTO> createInvoiceItem(@Valid @RequestBody InvoiceItemDTO invoiceItemDTO, @PathVariable Long invoice_id) throws URISyntaxException {
+    public ResponseEntity<InvoiceItemDTO> createInvoiceItem(@Valid @RequestBody InvoiceItemDTO invoiceItemDTO) throws URISyntaxException {
         log.debug("REST request to save InvoiceItem : {}", invoiceItemDTO);
         if (invoiceItemDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new invoiceItem cannot already have an ID")).body(null);
         }
         InvoiceItemDTO result = invoiceItemService.save(invoiceItemDTO);
-        return ResponseEntity.created(new URI("/api/invoices/"+ invoice_id +"/invoice-items/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/invoice-items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -69,12 +70,12 @@ public class InvoiceItemResource {
      * or with status 500 (Internal Server Error) if the invoiceItemDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("{invoice_id}/invoice-items")
+    @PutMapping("/invoice-items")
     @Timed
-    public ResponseEntity<InvoiceItemDTO> updateInvoiceItem(@Valid @RequestBody InvoiceItemDTO invoiceItemDTO, @PathVariable Long invoice_id) throws URISyntaxException {
+    public ResponseEntity<InvoiceItemDTO> updateInvoiceItem(@Valid @RequestBody InvoiceItemDTO invoiceItemDTO) throws URISyntaxException {
         log.debug("REST request to update InvoiceItem : {}", invoiceItemDTO);
         if (invoiceItemDTO.getId() == null) {
-            return createInvoiceItem(invoiceItemDTO, invoice_id);
+            return createInvoiceItem(invoiceItemDTO);
         }
         InvoiceItemDTO result = invoiceItemService.save(invoiceItemDTO);
         return ResponseEntity.ok()
@@ -88,11 +89,11 @@ public class InvoiceItemResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of invoiceItems in body
      */
-    @GetMapping("{invoice_id}/invoice-items")
+    @GetMapping("/invoice-items")
     @Timed
-    public ResponseEntity<List<InvoiceItemDTO>> getAllInvoiceItems(@ApiParam Pageable pageable, @PathVariable Long invoice_id) {
+    public ResponseEntity<List<InvoiceItemDTO>> getAllInvoiceItems(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of InvoiceItems");
-        Page<InvoiceItemDTO> page = invoiceItemService.findAllByInvoice_Id(pageable, invoice_id);
+        Page<InvoiceItemDTO> page = invoiceItemService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/invoice-items");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -103,9 +104,9 @@ public class InvoiceItemResource {
      * @param id the id of the invoiceItemDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the invoiceItemDTO, or with status 404 (Not Found)
      */
-    @GetMapping("{invoice_id}/invoice-items/{id}")
+    @GetMapping("/invoice-items/{id}")
     @Timed
-    public ResponseEntity<InvoiceItemDTO> getInvoiceItem(@PathVariable Long id) {
+    public ResponseEntity<InvoiceItemDTO> getInvoiceItem(@PathVariable UUID id) {
         log.debug("REST request to get InvoiceItem : {}", id);
         InvoiceItemDTO invoiceItemDTO = invoiceItemService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(invoiceItemDTO));
@@ -117,9 +118,9 @@ public class InvoiceItemResource {
      * @param id the id of the invoiceItemDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("{invoice_id}/invoice-items/{id}")
+    @DeleteMapping("/invoice-items/{id}")
     @Timed
-    public ResponseEntity<Void> deleteInvoiceItem(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteInvoiceItem(@PathVariable UUID id) {
         log.debug("REST request to delete InvoiceItem : {}", id);
         invoiceItemService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

@@ -31,12 +31,12 @@ public interface InvoiceService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    InvoiceDTO findOne(Long id);
+    InvoiceDTO findOne(UUID id);
 
     /**
      *  Delete the "id" invoice.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

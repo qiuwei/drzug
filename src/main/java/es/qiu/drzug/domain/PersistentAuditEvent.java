@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import java.util.UUID;
 
 /**
  * Persist AuditEvent managed by the Spring Boot actuator
@@ -18,9 +16,10 @@ import java.util.UUID;
 public class PersistentAuditEvent implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "event_id")
-    private UUID id;
+    private Long id;
 
     @NotNull
     @Column(nullable = false)
@@ -37,11 +36,11 @@ public class PersistentAuditEvent implements Serializable {
     @CollectionTable(name = "jhi_persistent_audit_evt_data", joinColumns=@JoinColumn(name="event_id"))
     private Map<String, String> data = new HashMap<>();
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

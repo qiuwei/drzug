@@ -18,7 +18,7 @@
     -->
     <changeSet id="20170818143435-1" author="jhipster">
         <createTable tableName="packet">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="uuid" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="weight" type="decimal(10,2)">
@@ -28,7 +28,7 @@
             <column name="status" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="destination_id" type="bigint">
+            <column name="destination_id" type="uuid">
                 <constraints unique="true" nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->

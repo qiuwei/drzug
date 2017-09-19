@@ -31,12 +31,12 @@ public interface PaymentService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    PaymentDTO findOne(Long id);
+    PaymentDTO findOne(UUID id);
 
     /**
      *  Delete the "id" payment.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

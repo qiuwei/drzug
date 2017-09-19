@@ -31,12 +31,12 @@ public interface TaxService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    TaxDTO findOne(Long id);
+    TaxDTO findOne(UUID id);
 
     /**
      *  Delete the "id" tax.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

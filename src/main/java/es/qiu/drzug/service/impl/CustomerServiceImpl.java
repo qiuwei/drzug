@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.CustomerDTO;
 import es.qiu.drzug.service.mapper.CustomerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService{
      */
     @Override
     @Transactional(readOnly = true)
-    public CustomerDTO findOne(Long id) {
+    public CustomerDTO findOne(UUID id) {
         log.debug("Request to get Customer : {}", id);
         Customer customer = customerRepository.findOne(id);
         return customerMapper.toDto(customer);
@@ -79,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete Customer : {}", id);
         customerRepository.delete(id);
     }

@@ -31,12 +31,12 @@ public interface PacketService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    PacketDTO findOne(Long id);
+    PacketDTO findOne(UUID id);
 
     /**
      *  Delete the "id" packet.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

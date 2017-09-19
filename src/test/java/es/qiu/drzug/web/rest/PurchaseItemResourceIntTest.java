@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -40,8 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DrzugApp.class)
 public class PurchaseItemResourceIntTest {
 
-    private static final Long DEFAULT_COUNT = 1L;
-    private static final Long UPDATED_COUNT = 2L;
+    private static final UUID DEFAULT_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    private static final UUID UPDATED_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
     @Autowired
     private PurchaseItemRepository purchaseItemRepository;
@@ -120,7 +121,7 @@ public class PurchaseItemResourceIntTest {
         int databaseSizeBeforeCreate = purchaseItemRepository.findAll().size();
 
         // Create the PurchaseItem with an existing ID
-        purchaseItem.setId(1L);
+        purchaseItem.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PurchaseItemDTO purchaseItemDTO = purchaseItemMapper.toDto(purchaseItem);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -163,8 +164,8 @@ public class PurchaseItemResourceIntTest {
         restPurchaseItemMockMvc.perform(get("/api/purchase-items?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(purchaseItem.getId().intValue())))
-            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(purchaseItem.getId().toString())))
+            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.toString())));
     }
 
     @Test
@@ -177,15 +178,15 @@ public class PurchaseItemResourceIntTest {
         restPurchaseItemMockMvc.perform(get("/api/purchase-items/{id}", purchaseItem.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(purchaseItem.getId().intValue()))
-            .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.intValue()));
+            .andExpect(jsonPath("$.id").value(purchaseItem.getId().toString()))
+            .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingPurchaseItem() throws Exception {
         // Get the purchaseItem
-        restPurchaseItemMockMvc.perform(get("/api/purchase-items/{id}", Long.MAX_VALUE))
+        restPurchaseItemMockMvc.perform(get("/api/purchase-items/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -255,11 +256,11 @@ public class PurchaseItemResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(PurchaseItem.class);
         PurchaseItem purchaseItem1 = new PurchaseItem();
-        purchaseItem1.setId(1L);
+        purchaseItem1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PurchaseItem purchaseItem2 = new PurchaseItem();
         purchaseItem2.setId(purchaseItem1.getId());
         assertThat(purchaseItem1).isEqualTo(purchaseItem2);
-        purchaseItem2.setId(2L);
+        purchaseItem2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(purchaseItem1).isNotEqualTo(purchaseItem2);
         purchaseItem1.setId(null);
         assertThat(purchaseItem1).isNotEqualTo(purchaseItem2);
@@ -270,12 +271,12 @@ public class PurchaseItemResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(PurchaseItemDTO.class);
         PurchaseItemDTO purchaseItemDTO1 = new PurchaseItemDTO();
-        purchaseItemDTO1.setId(1L);
+        purchaseItemDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PurchaseItemDTO purchaseItemDTO2 = new PurchaseItemDTO();
         assertThat(purchaseItemDTO1).isNotEqualTo(purchaseItemDTO2);
         purchaseItemDTO2.setId(purchaseItemDTO1.getId());
         assertThat(purchaseItemDTO1).isEqualTo(purchaseItemDTO2);
-        purchaseItemDTO2.setId(2L);
+        purchaseItemDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(purchaseItemDTO1).isNotEqualTo(purchaseItemDTO2);
         purchaseItemDTO1.setId(null);
         assertThat(purchaseItemDTO1).isNotEqualTo(purchaseItemDTO2);
@@ -284,7 +285,7 @@ public class PurchaseItemResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(purchaseItemMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(purchaseItemMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(purchaseItemMapper.fromId(null)).isNull();
     }
 }

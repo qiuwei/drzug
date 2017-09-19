@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -40,8 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DrzugApp.class)
 public class PacketItemResourceIntTest {
 
-    private static final Long DEFAULT_COUNT = 1L;
-    private static final Long UPDATED_COUNT = 2L;
+    private static final UUID DEFAULT_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    private static final UUID UPDATED_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
     @Autowired
     private PacketItemRepository packetItemRepository;
@@ -120,7 +121,7 @@ public class PacketItemResourceIntTest {
         int databaseSizeBeforeCreate = packetItemRepository.findAll().size();
 
         // Create the PacketItem with an existing ID
-        packetItem.setId(1L);
+        packetItem.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PacketItemDTO packetItemDTO = packetItemMapper.toDto(packetItem);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -163,8 +164,8 @@ public class PacketItemResourceIntTest {
         restPacketItemMockMvc.perform(get("/api/packet-items?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(packetItem.getId().intValue())))
-            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(packetItem.getId().toString())))
+            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.toString())));
     }
 
     @Test
@@ -177,15 +178,15 @@ public class PacketItemResourceIntTest {
         restPacketItemMockMvc.perform(get("/api/packet-items/{id}", packetItem.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(packetItem.getId().intValue()))
-            .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.intValue()));
+            .andExpect(jsonPath("$.id").value(packetItem.getId().toString()))
+            .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingPacketItem() throws Exception {
         // Get the packetItem
-        restPacketItemMockMvc.perform(get("/api/packet-items/{id}", Long.MAX_VALUE))
+        restPacketItemMockMvc.perform(get("/api/packet-items/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -255,11 +256,11 @@ public class PacketItemResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(PacketItem.class);
         PacketItem packetItem1 = new PacketItem();
-        packetItem1.setId(1L);
+        packetItem1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PacketItem packetItem2 = new PacketItem();
         packetItem2.setId(packetItem1.getId());
         assertThat(packetItem1).isEqualTo(packetItem2);
-        packetItem2.setId(2L);
+        packetItem2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(packetItem1).isNotEqualTo(packetItem2);
         packetItem1.setId(null);
         assertThat(packetItem1).isNotEqualTo(packetItem2);
@@ -270,12 +271,12 @@ public class PacketItemResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(PacketItemDTO.class);
         PacketItemDTO packetItemDTO1 = new PacketItemDTO();
-        packetItemDTO1.setId(1L);
+        packetItemDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PacketItemDTO packetItemDTO2 = new PacketItemDTO();
         assertThat(packetItemDTO1).isNotEqualTo(packetItemDTO2);
         packetItemDTO2.setId(packetItemDTO1.getId());
         assertThat(packetItemDTO1).isEqualTo(packetItemDTO2);
-        packetItemDTO2.setId(2L);
+        packetItemDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(packetItemDTO1).isNotEqualTo(packetItemDTO2);
         packetItemDTO1.setId(null);
         assertThat(packetItemDTO1).isNotEqualTo(packetItemDTO2);
@@ -284,7 +285,7 @@ public class PacketItemResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(packetItemMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(packetItemMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(packetItemMapper.fromId(null)).isNull();
     }
 }

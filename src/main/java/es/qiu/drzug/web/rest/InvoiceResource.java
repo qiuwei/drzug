@@ -1,9 +1,7 @@
 package es.qiu.drzug.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import es.qiu.drzug.service.InvoiceItemService;
 import es.qiu.drzug.service.InvoiceService;
-import es.qiu.drzug.service.dto.InvoiceItemDTO;
 import es.qiu.drzug.web.rest.util.HeaderUtil;
 import es.qiu.drzug.web.rest.util.PaginationUtil;
 import es.qiu.drzug.service.dto.InvoiceDTO;
@@ -23,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -107,7 +106,7 @@ public class InvoiceResource {
      */
     @GetMapping("/invoices/{id}")
     @Timed
-    public ResponseEntity<InvoiceDTO> getInvoice(@PathVariable Long id) {
+    public ResponseEntity<InvoiceDTO> getInvoice(@PathVariable UUID id) {
         log.debug("REST request to get Invoice : {}", id);
         InvoiceDTO invoiceDTO = invoiceService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(invoiceDTO));
@@ -121,10 +120,9 @@ public class InvoiceResource {
      */
     @DeleteMapping("/invoices/{id}")
     @Timed
-    public ResponseEntity<Void> deleteInvoice(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteInvoice(@PathVariable UUID id) {
         log.debug("REST request to delete Invoice : {}", id);
         invoiceService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
 }

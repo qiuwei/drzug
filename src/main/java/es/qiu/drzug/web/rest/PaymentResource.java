@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -105,7 +106,7 @@ public class PaymentResource {
      */
     @GetMapping("/payments/{id}")
     @Timed
-    public ResponseEntity<PaymentDTO> getPayment(@PathVariable Long id) {
+    public ResponseEntity<PaymentDTO> getPayment(@PathVariable UUID id) {
         log.debug("REST request to get Payment : {}", id);
         PaymentDTO paymentDTO = paymentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(paymentDTO));
@@ -119,7 +120,7 @@ public class PaymentResource {
      */
     @DeleteMapping("/payments/{id}")
     @Timed
-    public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePayment(@PathVariable UUID id) {
         log.debug("REST request to delete Payment : {}", id);
         paymentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

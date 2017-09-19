@@ -7,22 +7,24 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 
 /**
  * A DTO for the Purchase entity.
  */
 public class PurchaseDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
     private ZonedDateTime createdAt;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

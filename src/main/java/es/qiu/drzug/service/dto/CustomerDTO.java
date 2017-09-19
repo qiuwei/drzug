@@ -6,13 +6,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 
 /**
  * A DTO for the Customer entity.
  */
 public class CustomerDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
     private String firstName;
@@ -20,11 +22,11 @@ public class CustomerDTO implements Serializable {
     @NotNull
     private String lastName;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

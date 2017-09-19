@@ -31,12 +31,12 @@ public interface PurchaseService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    PurchaseDTO findOne(Long id);
+    PurchaseDTO findOne(UUID id);
 
     /**
      *  Delete the "id" purchase.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

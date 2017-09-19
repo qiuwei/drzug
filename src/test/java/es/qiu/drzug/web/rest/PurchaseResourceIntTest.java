@@ -29,6 +29,7 @@ import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.UUID;
 
 import static es.qiu.drzug.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -125,7 +126,7 @@ public class PurchaseResourceIntTest {
         int databaseSizeBeforeCreate = purchaseRepository.findAll().size();
 
         // Create the Purchase with an existing ID
-        purchase.setId(1L);
+        purchase.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PurchaseDTO purchaseDTO = purchaseMapper.toDto(purchase);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -168,7 +169,7 @@ public class PurchaseResourceIntTest {
         restPurchaseMockMvc.perform(get("/api/purchases?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(purchase.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(purchase.getId().toString())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))));
     }
 
@@ -182,7 +183,7 @@ public class PurchaseResourceIntTest {
         restPurchaseMockMvc.perform(get("/api/purchases/{id}", purchase.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(purchase.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(purchase.getId().toString()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)));
     }
 
@@ -190,7 +191,7 @@ public class PurchaseResourceIntTest {
     @Transactional
     public void getNonExistingPurchase() throws Exception {
         // Get the purchase
-        restPurchaseMockMvc.perform(get("/api/purchases/{id}", Long.MAX_VALUE))
+        restPurchaseMockMvc.perform(get("/api/purchases/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -260,11 +261,11 @@ public class PurchaseResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Purchase.class);
         Purchase purchase1 = new Purchase();
-        purchase1.setId(1L);
+        purchase1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Purchase purchase2 = new Purchase();
         purchase2.setId(purchase1.getId());
         assertThat(purchase1).isEqualTo(purchase2);
-        purchase2.setId(2L);
+        purchase2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(purchase1).isNotEqualTo(purchase2);
         purchase1.setId(null);
         assertThat(purchase1).isNotEqualTo(purchase2);
@@ -275,12 +276,12 @@ public class PurchaseResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(PurchaseDTO.class);
         PurchaseDTO purchaseDTO1 = new PurchaseDTO();
-        purchaseDTO1.setId(1L);
+        purchaseDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         PurchaseDTO purchaseDTO2 = new PurchaseDTO();
         assertThat(purchaseDTO1).isNotEqualTo(purchaseDTO2);
         purchaseDTO2.setId(purchaseDTO1.getId());
         assertThat(purchaseDTO1).isEqualTo(purchaseDTO2);
-        purchaseDTO2.setId(2L);
+        purchaseDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(purchaseDTO1).isNotEqualTo(purchaseDTO2);
         purchaseDTO1.setId(null);
         assertThat(purchaseDTO1).isNotEqualTo(purchaseDTO2);
@@ -289,7 +290,7 @@ public class PurchaseResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(purchaseMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(purchaseMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(purchaseMapper.fromId(null)).isNull();
     }
 }

@@ -7,6 +7,21 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "数据",
+                "customerMysuffix": "Customer",
+                "invoiceMysuffix": "Invoice",
+                "invoiceItemMysuffix": "Invoice Item",
+                "orderMysuffix": "Order",
+                "orderItemMysuffix": "Order Item",
+                "packetMysuffix": "Packet",
+                "packetItemMysuffix": "Packet Item",
+                "paymentMysuffix": "Payment",
+                "productMysuffix": "Product",
+                "providerMysuffix": "Provider",
+                "purchaseMysuffix": "Purchase",
+                "purchaseItemMysuffix": "Purchase Item",
+                "storageMysuffix": "Storage",
+                "taxMysuffix": "Tax",
+                "modules": "Modules",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -84,7 +99,7 @@
         "ribbon": {
             "dev":"Development"
         },
-        "item-count": "Showing {{first}} - {{second}} of {{total}} items."
+        "item-count": "显示第 {{first}} - {{second}} 条，共 {{total}} 条"
     },
     "entity": {
         "action": {

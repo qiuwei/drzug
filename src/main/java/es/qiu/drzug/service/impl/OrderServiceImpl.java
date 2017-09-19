@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.OrderDTO;
 import es.qiu.drzug.service.mapper.OrderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class OrderServiceImpl implements OrderService{
      */
     @Override
     @Transactional(readOnly = true)
-    public OrderDTO findOne(Long id) {
+    public OrderDTO findOne(UUID id) {
         log.debug("Request to get Order : {}", id);
         Order order = orderRepository.findOne(id);
         return orderMapper.toDto(order);
@@ -79,7 +80,7 @@ public class OrderServiceImpl implements OrderService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete Order : {}", id);
         orderRepository.delete(id);
     }

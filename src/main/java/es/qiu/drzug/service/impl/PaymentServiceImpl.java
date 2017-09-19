@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.PaymentDTO;
 import es.qiu.drzug.service.mapper.PaymentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class PaymentServiceImpl implements PaymentService{
      */
     @Override
     @Transactional(readOnly = true)
-    public PaymentDTO findOne(Long id) {
+    public PaymentDTO findOne(UUID id) {
         log.debug("Request to get Payment : {}", id);
         Payment payment = paymentRepository.findOne(id);
         return paymentMapper.toDto(payment);
@@ -79,7 +80,7 @@ public class PaymentServiceImpl implements PaymentService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete Payment : {}", id);
         paymentRepository.delete(id);
     }

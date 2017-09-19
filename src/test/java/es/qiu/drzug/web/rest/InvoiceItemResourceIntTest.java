@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -41,8 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DrzugApp.class)
 public class InvoiceItemResourceIntTest {
 
-    private static final Long DEFAULT_COUNT = 1L;
-    private static final Long UPDATED_COUNT = 2L;
+    private static final UUID DEFAULT_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    private static final UUID UPDATED_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
     private static final BigDecimal DEFAULT_DISCOUNT = new BigDecimal(1);
     private static final BigDecimal UPDATED_DISCOUNT = new BigDecimal(2);
@@ -126,7 +127,7 @@ public class InvoiceItemResourceIntTest {
         int databaseSizeBeforeCreate = invoiceItemRepository.findAll().size();
 
         // Create the InvoiceItem with an existing ID
-        invoiceItem.setId(1L);
+        invoiceItem.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         InvoiceItemDTO invoiceItemDTO = invoiceItemMapper.toDto(invoiceItem);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -169,9 +170,9 @@ public class InvoiceItemResourceIntTest {
         restInvoiceItemMockMvc.perform(get("/api/invoice-items?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(invoiceItem.getId().intValue())))
-            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.intValue())))
-            .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(invoiceItem.getId().toString())))
+            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.toString())))
+            .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.toString())));
     }
 
     @Test
@@ -184,16 +185,16 @@ public class InvoiceItemResourceIntTest {
         restInvoiceItemMockMvc.perform(get("/api/invoice-items/{id}", invoiceItem.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(invoiceItem.getId().intValue()))
-            .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.intValue()))
-            .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.intValue()));
+            .andExpect(jsonPath("$.id").value(invoiceItem.getId().toString()))
+            .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.toString()))
+            .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingInvoiceItem() throws Exception {
         // Get the invoiceItem
-        restInvoiceItemMockMvc.perform(get("/api/invoice-items/{id}", Long.MAX_VALUE))
+        restInvoiceItemMockMvc.perform(get("/api/invoice-items/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -265,11 +266,11 @@ public class InvoiceItemResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(InvoiceItem.class);
         InvoiceItem invoiceItem1 = new InvoiceItem();
-        invoiceItem1.setId(1L);
+        invoiceItem1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         InvoiceItem invoiceItem2 = new InvoiceItem();
         invoiceItem2.setId(invoiceItem1.getId());
         assertThat(invoiceItem1).isEqualTo(invoiceItem2);
-        invoiceItem2.setId(2L);
+        invoiceItem2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(invoiceItem1).isNotEqualTo(invoiceItem2);
         invoiceItem1.setId(null);
         assertThat(invoiceItem1).isNotEqualTo(invoiceItem2);
@@ -280,12 +281,12 @@ public class InvoiceItemResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(InvoiceItemDTO.class);
         InvoiceItemDTO invoiceItemDTO1 = new InvoiceItemDTO();
-        invoiceItemDTO1.setId(1L);
+        invoiceItemDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         InvoiceItemDTO invoiceItemDTO2 = new InvoiceItemDTO();
         assertThat(invoiceItemDTO1).isNotEqualTo(invoiceItemDTO2);
         invoiceItemDTO2.setId(invoiceItemDTO1.getId());
         assertThat(invoiceItemDTO1).isEqualTo(invoiceItemDTO2);
-        invoiceItemDTO2.setId(2L);
+        invoiceItemDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(invoiceItemDTO1).isNotEqualTo(invoiceItemDTO2);
         invoiceItemDTO1.setId(null);
         assertThat(invoiceItemDTO1).isNotEqualTo(invoiceItemDTO2);
@@ -294,7 +295,7 @@ public class InvoiceItemResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(invoiceItemMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(invoiceItemMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(invoiceItemMapper.fromId(null)).isNull();
     }
 }

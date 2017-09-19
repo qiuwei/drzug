@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.Tax;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+import java.util.UUID;
 
 
 /**
@@ -11,6 +12,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TaxRepository extends JpaRepository<Tax, Long> {
+public interface TaxRepository extends JpaRepository<Tax, UUID> {
 
 }

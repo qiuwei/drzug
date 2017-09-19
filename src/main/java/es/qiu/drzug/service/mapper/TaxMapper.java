@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.TaxDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity Tax and its DTO TaxDTO.
@@ -12,7 +13,7 @@ import org.mapstruct.*;
 public interface TaxMapper extends EntityMapper <TaxDTO, Tax> {
     
     
-    default Tax fromId(Long id) {
+    default Tax fromId(UUID id) {
         if (id == null) {
             return null;
         }

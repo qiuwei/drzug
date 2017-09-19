@@ -29,6 +29,7 @@ import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.UUID;
 
 import static es.qiu.drzug.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,7 +132,7 @@ public class OrderResourceIntTest {
         int databaseSizeBeforeCreate = orderRepository.findAll().size();
 
         // Create the Order with an existing ID
-        order.setId(1L);
+        order.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         OrderDTO orderDTO = orderMapper.toDto(order);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -193,7 +194,7 @@ public class OrderResourceIntTest {
         restOrderMockMvc.perform(get("/api/orders?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(order.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(order.getId().toString())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
@@ -208,7 +209,7 @@ public class OrderResourceIntTest {
         restOrderMockMvc.perform(get("/api/orders/{id}", order.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(order.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(order.getId().toString()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
@@ -217,7 +218,7 @@ public class OrderResourceIntTest {
     @Transactional
     public void getNonExistingOrder() throws Exception {
         // Get the order
-        restOrderMockMvc.perform(get("/api/orders/{id}", Long.MAX_VALUE))
+        restOrderMockMvc.perform(get("/api/orders/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -289,11 +290,11 @@ public class OrderResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Order.class);
         Order order1 = new Order();
-        order1.setId(1L);
+        order1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Order order2 = new Order();
         order2.setId(order1.getId());
         assertThat(order1).isEqualTo(order2);
-        order2.setId(2L);
+        order2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(order1).isNotEqualTo(order2);
         order1.setId(null);
         assertThat(order1).isNotEqualTo(order2);
@@ -304,12 +305,12 @@ public class OrderResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(OrderDTO.class);
         OrderDTO orderDTO1 = new OrderDTO();
-        orderDTO1.setId(1L);
+        orderDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         OrderDTO orderDTO2 = new OrderDTO();
         assertThat(orderDTO1).isNotEqualTo(orderDTO2);
         orderDTO2.setId(orderDTO1.getId());
         assertThat(orderDTO1).isEqualTo(orderDTO2);
-        orderDTO2.setId(2L);
+        orderDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(orderDTO1).isNotEqualTo(orderDTO2);
         orderDTO1.setId(null);
         assertThat(orderDTO1).isNotEqualTo(orderDTO2);
@@ -318,7 +319,7 @@ public class OrderResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(orderMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(orderMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(orderMapper.fromId(null)).isNull();
     }
 }

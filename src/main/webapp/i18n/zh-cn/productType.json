@@ -1,0 +1,9 @@
+{
+    "drzugApp": {
+        "ProductType" : {
+            "null": "",
+            "SERVICE": "SERVICE",
+            "PRODUCT": "PRODUCT"
+        }
+    }
+}

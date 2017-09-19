@@ -27,6 +27,7 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -147,7 +148,7 @@ public class ProductResourceIntTest {
         int databaseSizeBeforeCreate = productRepository.findAll().size();
 
         // Create the Product with an existing ID
-        product.setId(1L);
+        product.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         ProductDTO productDTO = productMapper.toDto(product);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -190,12 +191,12 @@ public class ProductResourceIntTest {
         restProductMockMvc.perform(get("/api/products?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].suggestedPrice").value(hasItem(DEFAULT_SUGGESTED_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].suggestedPrice").value(hasItem(DEFAULT_SUGGESTED_PRICE.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
@@ -209,12 +210,12 @@ public class ProductResourceIntTest {
         restProductMockMvc.perform(get("/api/products/{id}", product.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(product.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(product.getId().toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.suggestedPrice").value(DEFAULT_SUGGESTED_PRICE.intValue()))
+            .andExpect(jsonPath("$.suggestedPrice").value(DEFAULT_SUGGESTED_PRICE.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
 
@@ -222,7 +223,7 @@ public class ProductResourceIntTest {
     @Transactional
     public void getNonExistingProduct() throws Exception {
         // Get the product
-        restProductMockMvc.perform(get("/api/products/{id}", Long.MAX_VALUE))
+        restProductMockMvc.perform(get("/api/products/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -302,11 +303,11 @@ public class ProductResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Product.class);
         Product product1 = new Product();
-        product1.setId(1L);
+        product1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Product product2 = new Product();
         product2.setId(product1.getId());
         assertThat(product1).isEqualTo(product2);
-        product2.setId(2L);
+        product2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(product1).isNotEqualTo(product2);
         product1.setId(null);
         assertThat(product1).isNotEqualTo(product2);
@@ -317,12 +318,12 @@ public class ProductResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(ProductDTO.class);
         ProductDTO productDTO1 = new ProductDTO();
-        productDTO1.setId(1L);
+        productDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         ProductDTO productDTO2 = new ProductDTO();
         assertThat(productDTO1).isNotEqualTo(productDTO2);
         productDTO2.setId(productDTO1.getId());
         assertThat(productDTO1).isEqualTo(productDTO2);
-        productDTO2.setId(2L);
+        productDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(productDTO1).isNotEqualTo(productDTO2);
         productDTO1.setId(null);
         assertThat(productDTO1).isNotEqualTo(productDTO2);
@@ -331,7 +332,7 @@ public class ProductResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(productMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(productMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(productMapper.fromId(null)).isNull();
     }
 }

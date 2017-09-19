@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.OrderItemDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity OrderItem and its DTO OrderItemDTO.
@@ -21,7 +22,7 @@ public interface OrderItemMapper extends EntityMapper <OrderItemDTO, OrderItem> 
 
     @Mapping(source = "orderId", target = "order")
     OrderItem toEntity(OrderItemDTO orderItemDTO); 
-    default OrderItem fromId(Long id) {
+    default OrderItem fromId(UUID id) {
         if (id == null) {
             return null;
         }

@@ -31,12 +31,12 @@ public interface CustomerService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    CustomerDTO findOne(Long id);
+    CustomerDTO findOne(UUID id);
 
     /**
      *  Delete the "id" customer.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

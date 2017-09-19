@@ -27,7 +27,7 @@ export class TaxMysuffixDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id:  number) {
+    confirmDelete(id: number) {
         this.taxService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'taxListModification',

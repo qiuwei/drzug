@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -105,7 +106,7 @@ public class ProductResource {
      */
     @GetMapping("/products/{id}")
     @Timed
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable UUID id) {
         log.debug("REST request to get Product : {}", id);
         ProductDTO productDTO = productService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(productDTO));
@@ -119,7 +120,7 @@ public class ProductResource {
      */
     @DeleteMapping("/products/{id}")
     @Timed
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable UUID id) {
         log.debug("REST request to delete Product : {}", id);
         productService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

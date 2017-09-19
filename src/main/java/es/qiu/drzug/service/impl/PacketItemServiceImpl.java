@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.PacketItemDTO;
 import es.qiu.drzug.service.mapper.PacketItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class PacketItemServiceImpl implements PacketItemService{
      */
     @Override
     @Transactional(readOnly = true)
-    public PacketItemDTO findOne(Long id) {
+    public PacketItemDTO findOne(UUID id) {
         log.debug("Request to get PacketItem : {}", id);
         PacketItem packetItem = packetItemRepository.findOne(id);
         return packetItemMapper.toDto(packetItem);
@@ -79,7 +80,7 @@ public class PacketItemServiceImpl implements PacketItemService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete PacketItem : {}", id);
         packetItemRepository.delete(id);
     }

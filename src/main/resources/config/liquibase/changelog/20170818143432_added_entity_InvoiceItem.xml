@@ -18,10 +18,10 @@
     -->
     <changeSet id="20170818143432-1" author="jhipster">
         <createTable tableName="invoice_item">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="uuid" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="count" type="bigint">
+            <column name="count" type="uuid">
                 <constraints nullable="false" />
             </column>
 
@@ -29,12 +29,12 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="invoice_id" type="bigint">
+            <column name="invoice_id" type="uuid">
                 <constraints nullable="true" />
             </column>
-            <column name="product_id" type="bigint">
+            <column name="product_id" type="uuid">
                 <constraints unique="true" nullable="true" />
-            </column>            <column name="tax_id" type="bigint">
+            </column>            <column name="tax_id" type="uuid">
                 <constraints unique="true" nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->

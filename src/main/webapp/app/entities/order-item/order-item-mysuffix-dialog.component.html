@@ -35,7 +35,7 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="drzugApp.orderItem.product" for="field_product">Product</label>
-            <select class="form-control" id="field_product" name="product" [(ngModel)]="orderItem.productId">
+            <select class="form-control" id="field_product" name="product" [(ngModel)]="orderItem.productId" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.name}}</option>
             </select>

@@ -31,12 +31,12 @@ public interface ProductService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    ProductDTO findOne(Long id);
+    ProductDTO findOne(UUID id);
 
     /**
      *  Delete the "id" product.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

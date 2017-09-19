@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -41,8 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DrzugApp.class)
 public class OrderItemResourceIntTest {
 
-    private static final Long DEFAULT_COUNT = 1L;
-    private static final Long UPDATED_COUNT = 2L;
+    private static final UUID DEFAULT_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    private static final UUID UPDATED_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000002");
 
     private static final BigDecimal DEFAULT_SALE_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_SALE_PRICE = new BigDecimal(2);
@@ -126,7 +127,7 @@ public class OrderItemResourceIntTest {
         int databaseSizeBeforeCreate = orderItemRepository.findAll().size();
 
         // Create the OrderItem with an existing ID
-        orderItem.setId(1L);
+        orderItem.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         OrderItemDTO orderItemDTO = orderItemMapper.toDto(orderItem);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -169,9 +170,9 @@ public class OrderItemResourceIntTest {
         restOrderItemMockMvc.perform(get("/api/order-items?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(orderItem.getId().intValue())))
-            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.intValue())))
-            .andExpect(jsonPath("$.[*].salePrice").value(hasItem(DEFAULT_SALE_PRICE.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(orderItem.getId().toString())))
+            .andExpect(jsonPath("$.[*].count").value(hasItem(DEFAULT_COUNT.toString())))
+            .andExpect(jsonPath("$.[*].salePrice").value(hasItem(DEFAULT_SALE_PRICE.toString())));
     }
 
     @Test
@@ -184,16 +185,16 @@ public class OrderItemResourceIntTest {
         restOrderItemMockMvc.perform(get("/api/order-items/{id}", orderItem.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(orderItem.getId().intValue()))
-            .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.intValue()))
-            .andExpect(jsonPath("$.salePrice").value(DEFAULT_SALE_PRICE.intValue()));
+            .andExpect(jsonPath("$.id").value(orderItem.getId().toString()))
+            .andExpect(jsonPath("$.count").value(DEFAULT_COUNT.toString()))
+            .andExpect(jsonPath("$.salePrice").value(DEFAULT_SALE_PRICE.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingOrderItem() throws Exception {
         // Get the orderItem
-        restOrderItemMockMvc.perform(get("/api/order-items/{id}", Long.MAX_VALUE))
+        restOrderItemMockMvc.perform(get("/api/order-items/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -265,11 +266,11 @@ public class OrderItemResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(OrderItem.class);
         OrderItem orderItem1 = new OrderItem();
-        orderItem1.setId(1L);
+        orderItem1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         OrderItem orderItem2 = new OrderItem();
         orderItem2.setId(orderItem1.getId());
         assertThat(orderItem1).isEqualTo(orderItem2);
-        orderItem2.setId(2L);
+        orderItem2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(orderItem1).isNotEqualTo(orderItem2);
         orderItem1.setId(null);
         assertThat(orderItem1).isNotEqualTo(orderItem2);
@@ -280,12 +281,12 @@ public class OrderItemResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(OrderItemDTO.class);
         OrderItemDTO orderItemDTO1 = new OrderItemDTO();
-        orderItemDTO1.setId(1L);
+        orderItemDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         OrderItemDTO orderItemDTO2 = new OrderItemDTO();
         assertThat(orderItemDTO1).isNotEqualTo(orderItemDTO2);
         orderItemDTO2.setId(orderItemDTO1.getId());
         assertThat(orderItemDTO1).isEqualTo(orderItemDTO2);
-        orderItemDTO2.setId(2L);
+        orderItemDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(orderItemDTO1).isNotEqualTo(orderItemDTO2);
         orderItemDTO1.setId(null);
         assertThat(orderItemDTO1).isNotEqualTo(orderItemDTO2);
@@ -294,7 +295,7 @@ public class OrderItemResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(orderItemMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(orderItemMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(orderItemMapper.fromId(null)).isNull();
     }
 }

@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.ProductDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity Product and its DTO ProductDTO.
@@ -17,7 +18,7 @@ public interface ProductMapper extends EntityMapper <ProductDTO, Product> {
 
     @Mapping(source = "sourceTaxId", target = "sourceTax")
     Product toEntity(ProductDTO productDTO); 
-    default Product fromId(Long id) {
+    default Product fromId(UUID id) {
         if (id == null) {
             return null;
         }

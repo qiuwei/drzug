@@ -7,38 +7,40 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 
 /**
  * A DTO for the OrderItem entity.
  */
 public class OrderItemDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
-    private Long count;
+    private UUID count;
 
     private BigDecimal salePrice;
 
-    private Long productId;
+    private UUID productId;
 
     private String productName;
 
-    private Long orderId;
+    private UUID orderId;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getCount() {
+    public UUID getCount() {
         return count;
     }
 
-    public void setCount(Long count) {
+    public void setCount(UUID count) {
         this.count = count;
     }
 
@@ -50,11 +52,11 @@ public class OrderItemDTO implements Serializable {
         this.salePrice = salePrice;
     }
 
-    public Long getProductId() {
+    public UUID getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(UUID productId) {
         this.productId = productId;
     }
 
@@ -66,11 +68,11 @@ public class OrderItemDTO implements Serializable {
         this.productName = productName;
     }
 
-    public Long getOrderId() {
+    public UUID getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(UUID orderId) {
         this.orderId = orderId;
     }
 

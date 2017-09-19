@@ -7,6 +7,7 @@ import es.qiu.drzug.service.dto.PurchaseItemDTO;
 import es.qiu.drzug.service.mapper.PurchaseItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class PurchaseItemServiceImpl implements PurchaseItemService{
      */
     @Override
     @Transactional(readOnly = true)
-    public PurchaseItemDTO findOne(Long id) {
+    public PurchaseItemDTO findOne(UUID id) {
         log.debug("Request to get PurchaseItem : {}", id);
         PurchaseItem purchaseItem = purchaseItemRepository.findOne(id);
         return purchaseItemMapper.toDto(purchaseItem);
@@ -79,7 +80,7 @@ public class PurchaseItemServiceImpl implements PurchaseItemService{
      *  @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         log.debug("Request to delete PurchaseItem : {}", id);
         purchaseItemRepository.delete(id);
     }

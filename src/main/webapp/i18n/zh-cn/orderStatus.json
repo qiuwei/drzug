@@ -1,0 +1,12 @@
+{
+    "drzugApp": {
+        "OrderStatus" : {
+            "null": "",
+            "CANCELLED": "CANCELLED",
+            "LOCKED": "LOCKED",
+            "COMPLETED": "COMPLETED",
+            "NEW": "NEW",
+            "INQUIRY": "INQUIRY"
+        }
+    }
+}

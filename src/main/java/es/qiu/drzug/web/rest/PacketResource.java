@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -105,7 +106,7 @@ public class PacketResource {
      */
     @GetMapping("/packets/{id}")
     @Timed
-    public ResponseEntity<PacketDTO> getPacket(@PathVariable Long id) {
+    public ResponseEntity<PacketDTO> getPacket(@PathVariable UUID id) {
         log.debug("REST request to get Packet : {}", id);
         PacketDTO packetDTO = packetService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(packetDTO));
@@ -119,7 +120,7 @@ public class PacketResource {
      */
     @DeleteMapping("/packets/{id}")
     @Timed
-    public ResponseEntity<Void> deletePacket(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePacket(@PathVariable UUID id) {
         log.debug("REST request to delete Packet : {}", id);
         packetService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

@@ -38,19 +38,8 @@ export class OrderItemMysuffixDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.productService
-            .query({filter: 'orderitem-is-null'})
-            .subscribe((res: ResponseWrapper) => {
-                if (!this.orderItem.productId) {
-                    this.products = res.json;
-                } else {
-                    this.productService
-                        .find(this.orderItem.productId)
-                        .subscribe((subRes: ProductMysuffix) => {
-                            this.products = [subRes].concat(res.json);
-                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json));
+        this.productService.query()
+            .subscribe((res: ResponseWrapper) => { this.products = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.orderService.query()
             .subscribe((res: ResponseWrapper) => { this.orders = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }

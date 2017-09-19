@@ -6,6 +6,8 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 import es.qiu.drzug.domain.enumeration.Unit;
 
 /**
@@ -13,7 +15,7 @@ import es.qiu.drzug.domain.enumeration.Unit;
  */
 public class PaymentDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
     private ZonedDateTime date;
@@ -24,11 +26,11 @@ public class PaymentDTO implements Serializable {
     @NotNull
     private Unit unit;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

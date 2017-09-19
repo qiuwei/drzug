@@ -27,7 +27,7 @@ export class CustomerMysuffixDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id:  number) {
+    confirmDelete(id: number) {
         this.customerService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'customerListModification',

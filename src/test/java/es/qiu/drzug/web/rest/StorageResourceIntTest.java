@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -120,7 +121,7 @@ public class StorageResourceIntTest {
         int databaseSizeBeforeCreate = storageRepository.findAll().size();
 
         // Create the Storage with an existing ID
-        storage.setId(1L);
+        storage.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         StorageDTO storageDTO = storageMapper.toDto(storage);
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -163,7 +164,7 @@ public class StorageResourceIntTest {
         restStorageMockMvc.perform(get("/api/storages?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(storage.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(storage.getId().toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
 
@@ -177,7 +178,7 @@ public class StorageResourceIntTest {
         restStorageMockMvc.perform(get("/api/storages/{id}", storage.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(storage.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(storage.getId().toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
 
@@ -185,7 +186,7 @@ public class StorageResourceIntTest {
     @Transactional
     public void getNonExistingStorage() throws Exception {
         // Get the storage
-        restStorageMockMvc.perform(get("/api/storages/{id}", Long.MAX_VALUE))
+        restStorageMockMvc.perform(get("/api/storages/{id}", UUID.randomUUID()))
             .andExpect(status().isNotFound());
     }
 
@@ -255,11 +256,11 @@ public class StorageResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Storage.class);
         Storage storage1 = new Storage();
-        storage1.setId(1L);
+        storage1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         Storage storage2 = new Storage();
         storage2.setId(storage1.getId());
         assertThat(storage1).isEqualTo(storage2);
-        storage2.setId(2L);
+        storage2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(storage1).isNotEqualTo(storage2);
         storage1.setId(null);
         assertThat(storage1).isNotEqualTo(storage2);
@@ -270,12 +271,12 @@ public class StorageResourceIntTest {
     public void dtoEqualsVerifier() throws Exception {
         TestUtil.equalsVerifier(StorageDTO.class);
         StorageDTO storageDTO1 = new StorageDTO();
-        storageDTO1.setId(1L);
+        storageDTO1.setId(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         StorageDTO storageDTO2 = new StorageDTO();
         assertThat(storageDTO1).isNotEqualTo(storageDTO2);
         storageDTO2.setId(storageDTO1.getId());
         assertThat(storageDTO1).isEqualTo(storageDTO2);
-        storageDTO2.setId(2L);
+        storageDTO2.setId(UUID.fromString("00000000-0000-0000-0000-000000000002"));
         assertThat(storageDTO1).isNotEqualTo(storageDTO2);
         storageDTO1.setId(null);
         assertThat(storageDTO1).isNotEqualTo(storageDTO2);
@@ -284,7 +285,7 @@ public class StorageResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-        assertThat(storageMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(storageMapper.fromId(UUID.fromString("00000000-0000-0000-0000-000000000042")).getId()).isEqualTo(UUID.fromString("00000000-0000-0000-0000-000000000042"));
         assertThat(storageMapper.fromId(null)).isNull();
     }
 }

@@ -6,52 +6,54 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 
 /**
  * A DTO for the PurchaseItem entity.
  */
 public class PurchaseItemDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
-    private Long count;
+    private UUID count;
 
-    private Long purchaseId;
+    private UUID purchaseId;
 
-    private Long productId;
+    private UUID productId;
 
     private String productName;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getCount() {
+    public UUID getCount() {
         return count;
     }
 
-    public void setCount(Long count) {
+    public void setCount(UUID count) {
         this.count = count;
     }
 
-    public Long getPurchaseId() {
+    public UUID getPurchaseId() {
         return purchaseId;
     }
 
-    public void setPurchaseId(Long purchaseId) {
+    public void setPurchaseId(UUID purchaseId) {
         this.purchaseId = purchaseId;
     }
 
-    public Long getProductId() {
+    public UUID getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(UUID productId) {
         this.productId = productId;
     }
 

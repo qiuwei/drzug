@@ -6,40 +6,42 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.UUID;
 
 /**
  * A DTO for the PacketItem entity.
  */
 public class PacketItemDTO implements Serializable {
 
-    private Long id;
+    private UUID id;
 
     @NotNull
-    private Long count;
+    private UUID count;
 
-    private Long packetId;
+    private UUID packetId;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getCount() {
+    public UUID getCount() {
         return count;
     }
 
-    public void setCount(Long count) {
+    public void setCount(UUID count) {
         this.count = count;
     }
 
-    public Long getPacketId() {
+    public UUID getPacketId() {
         return packetId;
     }
 
-    public void setPacketId(Long packetId) {
+    public void setPacketId(UUID packetId) {
         this.packetId = packetId;
     }
 

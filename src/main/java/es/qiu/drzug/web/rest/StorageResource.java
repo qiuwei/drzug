@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 /**
@@ -105,7 +106,7 @@ public class StorageResource {
      */
     @GetMapping("/storages/{id}")
     @Timed
-    public ResponseEntity<StorageDTO> getStorage(@PathVariable Long id) {
+    public ResponseEntity<StorageDTO> getStorage(@PathVariable UUID id) {
         log.debug("REST request to get Storage : {}", id);
         StorageDTO storageDTO = storageService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(storageDTO));
@@ -119,7 +120,7 @@ public class StorageResource {
      */
     @DeleteMapping("/storages/{id}")
     @Timed
-    public ResponseEntity<Void> deleteStorage(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteStorage(@PathVariable UUID id) {
         log.debug("REST request to delete Storage : {}", id);
         storageService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

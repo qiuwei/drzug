@@ -31,12 +31,12 @@ public interface StorageService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    StorageDTO findOne(Long id);
+    StorageDTO findOne(UUID id);
 
     /**
      *  Delete the "id" storage.
      *
      *  @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(UUID id);
 }

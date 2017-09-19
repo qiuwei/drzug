@@ -27,7 +27,7 @@ export class OrderItemMysuffixDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id:  number) {
+    confirmDelete(id: number) {
         this.orderItemService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'orderItemListModification',

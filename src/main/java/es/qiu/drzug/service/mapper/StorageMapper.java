@@ -4,6 +4,7 @@ import es.qiu.drzug.domain.*;
 import es.qiu.drzug.service.dto.StorageDTO;
 
 import org.mapstruct.*;
+import java.util.UUID;
 
 /**
  * Mapper for the entity Storage and its DTO StorageDTO.
@@ -12,7 +13,7 @@ import org.mapstruct.*;
 public interface StorageMapper extends EntityMapper <StorageDTO, Storage> {
     
     
-    default Storage fromId(Long id) {
+    default Storage fromId(UUID id) {
         if (id == null) {
             return null;
         }
