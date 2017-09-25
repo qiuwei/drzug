@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import template from 'url-template';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { OrderItemMysuffix } from './order-item-mysuffix.model';
@@ -9,38 +10,38 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class OrderItemMysuffixService {
 
-    private resourceUrl = SERVER_API_URL + 'api/order-items';
+    private resourceTemplate = template.parse(SERVER_API_URL + 'api/orders/{orderId}/order-items/{id}');
 
     constructor(private http: Http) { }
 
-    create(orderItem: OrderItemMysuffix): Observable<OrderItemMysuffix> {
+    create(orderId: number, orderItem: OrderItemMysuffix): Observable<OrderItemMysuffix> {
         const copy = this.convert(orderItem);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
+        return this.http.post(this.resourceTemplate.expand({orderId: orderId}), copy).map((res: Response) => {
             return res.json();
         });
     }
 
-    update(orderItem: OrderItemMysuffix): Observable<OrderItemMysuffix> {
+    update(orderId: number, orderItem: OrderItemMysuffix): Observable<OrderItemMysuffix> {
         const copy = this.convert(orderItem);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
+        return this.http.put(this.resourceTemplate.expand({orderId: orderId}), copy).map((res: Response) => {
             return res.json();
         });
     }
 
-    find(id: number): Observable<OrderItemMysuffix> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
+    find(orderId: number, id: number): Observable<OrderItemMysuffix> {
+        return this.http.get(this.resourceTemplate.expand({orderId: orderId, id: id})).map((res: Response) => {
             return res.json();
         });
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(orderId: number, req?: any,): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
+        return this.http.get(this.resourceTemplate.expand({orderId: orderId}), options)
             .map((res: Response) => this.convertResponse(res));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(orderId: number, id: number): Observable<Response> {
+        return this.http.delete(this.resourceTemplate.expand({orderId: orderId, id: id}));
     }
 
     private convertResponse(res: Response): ResponseWrapper {

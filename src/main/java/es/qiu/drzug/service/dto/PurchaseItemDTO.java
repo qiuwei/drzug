@@ -17,7 +17,7 @@ public class PurchaseItemDTO implements Serializable {
     private UUID id;
 
     @NotNull
-    private UUID count;
+    private Long count;
 
     private UUID purchaseId;
 
@@ -33,11 +33,11 @@ public class PurchaseItemDTO implements Serializable {
         this.id = id;
     }
 
-    public UUID getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(UUID count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

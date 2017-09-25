@@ -31,7 +31,7 @@ export class OrderItemMysuffixDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.orderItemService.find(id).subscribe((orderItem) => {
+        this.orderItemService.find(this.orderItem.orderId, id).subscribe((orderItem) => {
             this.orderItem = orderItem;
         });
     }
@@ -47,7 +47,7 @@ export class OrderItemMysuffixDetailComponent implements OnInit, OnDestroy {
     registerChangeInOrderItems() {
         this.eventSubscriber = this.eventManager.subscribe(
             'orderItemListModification',
-            (response) => this.load(this.orderItem.id)
+            (response) => this.load(this.orderItem.orderId, this.orderItem.id)
         );
     }
 }

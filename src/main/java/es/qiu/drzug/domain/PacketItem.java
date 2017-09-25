@@ -25,7 +25,7 @@ public class PacketItem implements Serializable {
 
     @NotNull
     @Column(name = "count", nullable = false)
-    private UUID count;
+    private Long count;
 
     @ManyToOne
     private Packet packet;
@@ -39,16 +39,16 @@ public class PacketItem implements Serializable {
         this.id = id;
     }
 
-    public UUID getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public PacketItem count(UUID count) {
+    public PacketItem count(Long count) {
         this.count = count;
         return this;
     }
 
-    public void setCount(UUID count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

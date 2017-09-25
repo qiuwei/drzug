@@ -41,8 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DrzugApp.class)
 public class PacketItemResourceIntTest {
 
-    private static final UUID DEFAULT_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000001");
-    private static final UUID UPDATED_COUNT = UUID.fromString("00000000-0000-0000-0000-000000000002");
+    private static final Long DEFAULT_COUNT = 1L;
+    private static final Long UPDATED_COUNT = 2L;
 
     @Autowired
     private PacketItemRepository packetItemRepository;

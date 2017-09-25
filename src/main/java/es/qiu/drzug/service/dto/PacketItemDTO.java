@@ -17,7 +17,7 @@ public class PacketItemDTO implements Serializable {
     private UUID id;
 
     @NotNull
-    private UUID count;
+    private Long count;
 
     private UUID packetId;
 
@@ -29,11 +29,11 @@ public class PacketItemDTO implements Serializable {
         this.id = id;
     }
 
-    public UUID getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(UUID count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

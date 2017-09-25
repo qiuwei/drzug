@@ -21,7 +21,7 @@
             <column name="id" type="uuid" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="count" type="uuid">
+            <column name="count" type="bigint">
                 <constraints nullable="false" />
             </column>
 
@@ -31,7 +31,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

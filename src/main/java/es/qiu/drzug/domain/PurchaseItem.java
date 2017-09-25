@@ -25,7 +25,7 @@ public class PurchaseItem implements Serializable {
 
     @NotNull
     @Column(name = "count", nullable = false)
-    private UUID count;
+    private Long count;
 
     @ManyToOne
     private Purchase purchase;
@@ -43,16 +43,16 @@ public class PurchaseItem implements Serializable {
         this.id = id;
     }
 
-    public UUID getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public PurchaseItem count(UUID count) {
+    public PurchaseItem count(Long count) {
         this.count = count;
         return this;
     }
 
-    public void setCount(UUID count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

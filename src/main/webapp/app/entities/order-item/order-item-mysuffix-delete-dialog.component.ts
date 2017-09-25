@@ -28,7 +28,7 @@ export class OrderItemMysuffixDeleteDialogComponent {
     }
 
     confirmDelete(id: number) {
-        this.orderItemService.delete(id).subscribe((response) => {
+        this.orderItemService.delete(this.orderItem.orderId, id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'orderItemListModification',
                 content: 'Deleted an orderItem'
