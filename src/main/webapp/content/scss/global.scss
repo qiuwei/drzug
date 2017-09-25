@@ -243,4 +243,14 @@ Social button
     border-color: rgba(0, 0, 0, 0.2);
     color: #fff;
 }
+
+
+
+@media screen and (max-width: 992px) {
+    .push-right {
+        .sidebar {
+            left: 235px !important;
+        }
+    }
+}
 /* jhipster-needle-scss-add-main JHipster will add new css style */

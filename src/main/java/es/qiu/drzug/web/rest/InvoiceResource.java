@@ -2,6 +2,7 @@ package es.qiu.drzug.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import es.qiu.drzug.service.InvoiceService;
+import es.qiu.drzug.service.util.BaseXUtil;
 import es.qiu.drzug.web.rest.util.HeaderUtil;
 import es.qiu.drzug.web.rest.util.PaginationUtil;
 import es.qiu.drzug.service.dto.InvoiceDTO;

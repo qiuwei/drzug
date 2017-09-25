@@ -4,10 +4,7 @@ package es.qiu.drzug.service.dto;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.UUID;
 
 /**
@@ -18,7 +15,7 @@ public class OrderItemDTO implements Serializable {
     private UUID id;
 
     @NotNull
-    private UUID count;
+    private Long count;
 
     private BigDecimal salePrice;
 
@@ -36,11 +33,11 @@ public class OrderItemDTO implements Serializable {
         this.id = id;
     }
 
-    public UUID getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(UUID count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

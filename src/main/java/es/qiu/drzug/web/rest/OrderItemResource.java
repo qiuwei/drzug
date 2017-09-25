@@ -28,7 +28,7 @@ import java.util.Optional;
  * REST controller for managing OrderItem.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/orders/{orderId}")
 public class OrderItemResource {
 
     private final Logger log = LoggerFactory.getLogger(OrderItemResource.class);
@@ -50,13 +50,13 @@ public class OrderItemResource {
      */
     @PostMapping("/order-items")
     @Timed
-    public ResponseEntity<OrderItemDTO> createOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO) throws URISyntaxException {
+    public ResponseEntity<OrderItemDTO> createOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO, @PathVariable UUID orderId) throws URISyntaxException {
         log.debug("REST request to save OrderItem : {}", orderItemDTO);
         if (orderItemDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new orderItem cannot already have an ID")).body(null);
         }
-        OrderItemDTO result = orderItemService.save(orderItemDTO);
-        return ResponseEntity.created(new URI("/api/order-items/" + result.getId()))
+        OrderItemDTO result = orderItemService.save(orderItemDTO, orderId);
+        return ResponseEntity.created(new URI("/api/orders/" + orderId + "order-items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -72,12 +72,12 @@ public class OrderItemResource {
      */
     @PutMapping("/order-items")
     @Timed
-    public ResponseEntity<OrderItemDTO> updateOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO) throws URISyntaxException {
+    public ResponseEntity<OrderItemDTO> updateOrderItem(@Valid @RequestBody OrderItemDTO orderItemDTO, @PathVariable UUID orderId) throws URISyntaxException {
         log.debug("REST request to update OrderItem : {}", orderItemDTO);
         if (orderItemDTO.getId() == null) {
-            return createOrderItem(orderItemDTO);
+            return createOrderItem(orderItemDTO, orderId);
         }
-        OrderItemDTO result = orderItemService.save(orderItemDTO);
+        OrderItemDTO result = orderItemService.save(orderItemDTO, orderId);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderItemDTO.getId().toString()))
             .body(result);
@@ -91,9 +91,9 @@ public class OrderItemResource {
      */
     @GetMapping("/order-items")
     @Timed
-    public ResponseEntity<List<OrderItemDTO>> getAllOrderItems(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<OrderItemDTO>> getAllOrderItems(@ApiParam Pageable pageable, @PathVariable UUID orderId) {
         log.debug("REST request to get a page of OrderItems");
-        Page<OrderItemDTO> page = orderItemService.findAll(pageable);
+        Page<OrderItemDTO> page = orderItemService.findAllByOrder_Id(pageable, orderId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/order-items");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -125,4 +125,5 @@ public class OrderItemResource {
         orderItemService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
 }

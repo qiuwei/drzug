@@ -39,7 +39,7 @@ public class OrderItemServiceImpl implements OrderItemService{
      * @return the persisted entity
      */
     @Override
-    public OrderItemDTO save(OrderItemDTO orderItemDTO) {
+    public OrderItemDTO save(OrderItemDTO orderItemDTO, UUID orderId) {
         log.debug("Request to save OrderItem : {}", orderItemDTO);
         OrderItem orderItem = orderItemMapper.toEntity(orderItemDTO);
         orderItem = orderItemRepository.save(orderItem);
@@ -47,16 +47,16 @@ public class OrderItemServiceImpl implements OrderItemService{
     }
 
     /**
-     *  Get all the orderItems.
+     *  Get all the orderItems by orderId
      *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<OrderItemDTO> findAll(Pageable pageable) {
+    public Page<OrderItemDTO> findAllByOrder_Id(Pageable pageable, UUID orderId) {
         log.debug("Request to get all OrderItems");
-        return orderItemRepository.findAll(pageable)
+        return orderItemRepository.findAllByOrder_Id(pageable, orderId)
             .map(orderItemMapper::toDto);
     }
 
@@ -84,4 +84,5 @@ public class OrderItemServiceImpl implements OrderItemService{
         log.debug("Request to delete OrderItem : {}", id);
         orderItemRepository.delete(id);
     }
+
 }

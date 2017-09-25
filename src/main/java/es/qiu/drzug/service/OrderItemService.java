@@ -17,15 +17,8 @@ public interface OrderItemService {
      * @param orderItemDTO the entity to save
      * @return the persisted entity
      */
-    OrderItemDTO save(OrderItemDTO orderItemDTO);
+    OrderItemDTO save(OrderItemDTO orderItemDTO, UUID orderId);
 
-    /**
-     *  Get all the orderItems.
-     *
-     *  @param pageable the pagination information
-     *  @return the list of entities
-     */
-    Page<OrderItemDTO> findAll(Pageable pageable);
 
     /**
      *  Get the "id" orderItem.
@@ -41,4 +34,13 @@ public interface OrderItemService {
      *  @param id the id of the entity
      */
     void delete(UUID id);
+
+
+    /**
+     *  Get all the orderItems by orderId
+     *
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    Page<OrderItemDTO> findAllByOrder_Id(Pageable pageable, UUID orderId);
 }

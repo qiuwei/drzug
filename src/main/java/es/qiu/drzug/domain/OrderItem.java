@@ -26,7 +26,7 @@ public class OrderItem implements Serializable {
 
     @NotNull
     @Column(name = "count", nullable = false)
-    private UUID count;
+    private Long count;
 
     @Column(name = "sale_price", precision=10, scale=2)
     private BigDecimal salePrice;
@@ -46,16 +46,16 @@ public class OrderItem implements Serializable {
         this.id = id;
     }
 
-    public UUID getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public OrderItem count(UUID count) {
+    public OrderItem count(Long count) {
         this.count = count;
         return this;
     }
 
-    public void setCount(UUID count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

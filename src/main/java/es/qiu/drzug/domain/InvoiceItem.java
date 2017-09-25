@@ -26,7 +26,7 @@ public class InvoiceItem implements Serializable {
 
     @NotNull
     @Column(name = "count", nullable = false)
-    private UUID count;
+    private Long count;
 
     @Column(name = "discount", precision=10, scale=2)
     private BigDecimal discount;
@@ -51,16 +51,16 @@ public class InvoiceItem implements Serializable {
         this.id = id;
     }
 
-    public UUID getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public InvoiceItem count(UUID count) {
+    public InvoiceItem count(Long count) {
         this.count = count;
         return this;
     }
 
-    public void setCount(UUID count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

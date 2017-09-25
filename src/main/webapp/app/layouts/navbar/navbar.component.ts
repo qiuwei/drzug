@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Router, NavigationEnd} from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLanguageService } from 'ng-jhipster';
 
@@ -17,6 +17,7 @@ import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 })
 export class NavbarComponent implements OnInit {
 
+    pushRightClass: string = 'push-right';
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
@@ -46,6 +47,22 @@ export class NavbarComponent implements OnInit {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
+
+        this.router.events.subscribe((val) => {
+            if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isSidebarToggled()) {
+                this.toggleSidebar();
+            }
+        });
+    }
+
+    isSidebarToggled(): boolean {
+        const dom: Element = document.querySelector('body');
+        return dom.classList.contains(this.pushRightClass);
+    }
+
+    toggleSidebar() {
+        const dom: any = document.querySelector('body');
+        dom.classList.toggle(this.pushRightClass);
     }
 
     changeLanguage(languageKey: string) {
