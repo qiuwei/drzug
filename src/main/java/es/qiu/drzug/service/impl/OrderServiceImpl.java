@@ -1,5 +1,6 @@
 package es.qiu.drzug.service.impl;
 
+import es.qiu.drzug.repository.OrderItemRepository;
 import es.qiu.drzug.service.OrderService;
 import es.qiu.drzug.domain.Order;
 import es.qiu.drzug.repository.OrderRepository;
@@ -25,10 +26,13 @@ public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
 
+    private final OrderItemRepository orderItemRepository;
+
     private final OrderMapper orderMapper;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
         this.orderMapper = orderMapper;
     }
 

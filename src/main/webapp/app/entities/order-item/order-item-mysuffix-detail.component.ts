@@ -47,7 +47,7 @@ export class OrderItemMysuffixDetailComponent implements OnInit, OnDestroy {
     registerChangeInOrderItems() {
         this.eventSubscriber = this.eventManager.subscribe(
             'orderItemListModification',
-            (response) => this.load(this.orderItem.orderId, this.orderItem.id)
+            (response) => this.load(this.orderItem.id)
         );
     }
 }

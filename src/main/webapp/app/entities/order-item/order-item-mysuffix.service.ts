@@ -11,37 +11,38 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class OrderItemMysuffixService {
 
     private resourceTemplate = template.parse(SERVER_API_URL + 'api/orders/{orderId}/order-items/{id}');
+    private resourceUrl  = SERVER_API_URL + '/api/orders/';
 
     constructor(private http: Http) { }
 
     create(orderId: number, orderItem: OrderItemMysuffix): Observable<OrderItemMysuffix> {
         const copy = this.convert(orderItem);
-        return this.http.post(this.resourceTemplate.expand({orderId: orderId}), copy).map((res: Response) => {
+        return this.http.post(`${this.resourceUrl}/${orderId}/order-items/`, copy).map((res: Response) => {
             return res.json();
         });
     }
 
     update(orderId: number, orderItem: OrderItemMysuffix): Observable<OrderItemMysuffix> {
         const copy = this.convert(orderItem);
-        return this.http.put(this.resourceTemplate.expand({orderId: orderId}), copy).map((res: Response) => {
+        return this.http.put(`${this.resourceUrl}/${orderId}/order-items/`, copy).map((res: Response) => {
             return res.json();
         });
     }
 
     find(orderId: number, id: number): Observable<OrderItemMysuffix> {
-        return this.http.get(this.resourceTemplate.expand({orderId: orderId, id: id})).map((res: Response) => {
+        return this.http.get(`${this.resourceUrl}/${orderId}/order-items/{id}`).map((res: Response) => {
             return res.json();
         });
     }
 
     query(orderId: number, req?: any,): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceTemplate.expand({orderId: orderId}), options)
+        return this.http.get(`${this.resourceUrl}/${orderId}/order-items/`, options)
             .map((res: Response) => this.convertResponse(res));
     }
 
     delete(orderId: number, id: number): Observable<Response> {
-        return this.http.delete(this.resourceTemplate.expand({orderId: orderId, id: id}));
+        return this.http.delete(`${this.resourceUrl}/${orderId}/order-items/{id}`);
     }
 
     private convertResponse(res: Response): ResponseWrapper {

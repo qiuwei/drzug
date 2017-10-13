@@ -14,7 +14,6 @@ import { DrzugPurchaseMysuffixModule } from './purchase/purchase-mysuffix.module
 import { DrzugPurchaseItemMysuffixModule } from './purchase-item/purchase-item-mysuffix.module';
 import { DrzugStorageMysuffixModule } from './storage/storage-mysuffix.module';
 import { DrzugTaxMysuffixModule } from './tax/tax-mysuffix.module';
-import { DrzugModulesModule } from './modules/modules.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -33,7 +32,6 @@ import { DrzugModulesModule } from './modules/modules.module';
         DrzugPurchaseItemMysuffixModule,
         DrzugStorageMysuffixModule,
         DrzugTaxMysuffixModule,
-        DrzugModulesModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

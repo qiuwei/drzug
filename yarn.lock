@@ -135,6 +135,14 @@
   version "1.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0-beta.4.tgz#18ffd662a4c77305213e76f6ae47b0ffda03bb7c"
 
+"@ngrx/core@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/core/-/core-1.2.0.tgz#882b46abafa2e0e6d887cb71a1b2c2fa3e6d0dc6"
+
+"@ngrx/store@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-4.0.3.tgz#36abacdfa19bfb8506e40de80bae06050a1e15e9"
+
 "@ngtools/json-schema@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"

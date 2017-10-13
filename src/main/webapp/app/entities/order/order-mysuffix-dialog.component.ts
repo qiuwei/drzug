@@ -6,9 +6,11 @@ import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { OrderMysuffix } from './order-mysuffix.model';
+import {OrderMysuffix, OrderStatus} from './order-mysuffix.model';
 import { OrderMysuffixPopupService } from './order-mysuffix-popup.service';
 import { OrderMysuffixService } from './order-mysuffix.service';
+import {FormGroup, FormBuilder, FormArray} from "@angular/forms";
+import {OrderItemMysuffix} from "../order-item/order-item-mysuffix.model";
 
 @Component({
     selector: 'jhi-order-mysuffix-dialog',
@@ -18,9 +20,11 @@ export class OrderMysuffixDialogComponent implements OnInit {
 
     order: OrderMysuffix;
     isSaving: boolean;
+    orderForm: FormGroup;
 
     constructor(
         public activeModal: NgbActiveModal,
+        private fb: FormBuilder,
         private alertService: JhiAlertService,
         private orderService: OrderMysuffixService,
         private eventManager: JhiEventManager
@@ -29,10 +33,41 @@ export class OrderMysuffixDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.createForm();
+        //this.setOrderItems(this.order.orderItems);
     }
 
     clear() {
         this.activeModal.dismiss('cancel');
+    }
+
+    createForm() {
+        this.orderForm  = this.fb.group({
+            id: '',
+            createdAt: '',
+            status: 'New',
+            orderItems: this.fb.array([])
+        });
+    }
+
+    get orderItems(): FormArray {
+        return this.orderForm.get('orderItems') as FormArray;
+
+    }
+
+    setOrderItems(orderItems: OrderItemMysuffix[]) {
+        const orderItemFGs = orderItems.map(orderItem => this.fb.group(orderItem));
+        const orderItemArray = this.fb.array(orderItemFGs);
+        this.orderForm.setControl('orderItems', orderItemArray);
+    }
+
+
+    addOrderItem() {
+        this.orderItems.push(this.fb.group(new OrderItemMysuffix()));
+    }
+
+    removeOrderItem(i: number) {
+        this.orderItems.removeAt(i);
     }
 
     save() {

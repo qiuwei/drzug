@@ -38,8 +38,7 @@ public class Order implements Serializable {
     @Column(name = "status", nullable = false)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order")
-    @JsonIgnore
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<OrderItem> orderItems = new HashSet<>();
 

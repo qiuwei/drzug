@@ -25,7 +25,7 @@ export class OrderItemMysuffixPopupService {
             }
 
             if (id) {
-                this.orderItemService.find(id).subscribe((orderItem) => {
+                this.orderItemService.find(1, id).subscribe((orderItem) => {
                     this.ngbModalRef = this.orderItemModalRef(component, orderItem);
                     resolve(this.ngbModalRef);
                 });

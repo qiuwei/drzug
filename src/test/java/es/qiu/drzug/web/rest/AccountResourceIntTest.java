@@ -457,8 +457,8 @@ public class AccountResourceIntTest {
             "firstname",                // firstName
             "lastname",                  // lastName
             "save-account@example.com",    // email
-            false,                   // activated
             "http://placehold.it/50x50", //imageUrl
+            false,                   // activated
             "en",                   // langKey
             null,                   // createdBy
             null,                   // createdDate
@@ -502,8 +502,8 @@ public class AccountResourceIntTest {
             "firstname",                // firstName
             "lastname",                  // lastName
             "invalid email",    // email
-            false,                   // activated
             "http://placehold.it/50x50", //imageUrl
+            false,                   // activated
             "en",                   // langKey
             null,                   // createdBy
             null,                   // createdDate
@@ -547,8 +547,8 @@ public class AccountResourceIntTest {
             "firstname",                // firstName
             "lastname",                  // lastName
             "save-existing-email2@example.com",    // email
-            false,                   // activated
             "http://placehold.it/50x50", //imageUrl
+            false,                   // activated
             "en",                   // langKey
             null,                   // createdBy
             null,                   // createdDate
@@ -585,8 +585,8 @@ public class AccountResourceIntTest {
             "firstname",                // firstName
             "lastname",                  // lastName
             "save-existing-email-and-login@example.com",    // email
-            false,                   // activated
             "http://placehold.it/50x50", //imageUrl
+            false,                   // activated
             "en",                   // langKey
             null,                   // createdBy
             null,                   // createdDate

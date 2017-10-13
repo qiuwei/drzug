@@ -1,4 +1,5 @@
 import { BaseEntity } from './../../shared';
+import { OrderItemMysuffix } from "../order-item/order-item-mysuffix.model";
 
 export const enum OrderStatus {
     'CANCELLED',
@@ -13,7 +14,7 @@ export class OrderMysuffix implements BaseEntity {
         public id?: number,
         public createdAt?: any,
         public status?: OrderStatus,
-        public orderItems?: BaseEntity[],
+        public orderItems?: OrderItemMysuffix[],
     ) {
     }
 }

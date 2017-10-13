@@ -1,4 +1,4 @@
-<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+<form  [formGroup]="orderForm" name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
         <h4 class="modal-title" id="myOrderLabel" jhiTranslate="drzugApp.order.home.createOrEditLabel">Create or edit a Order</h4>
@@ -7,12 +7,11 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!order.id">
+<!--        <div class="form-group" [hidden]="!order.id">
             <label for="id" jhiTranslate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="order.id" readonly />
-        </div>
-        <div class="form-group">
+
             <label class="form-control-label" jhiTranslate="drzugApp.order.createdAt" for="field_createdAt">Created At</label>
             <div class="d-flex">
                 <input id="field_createdAt" type="datetime-local" class="form-control" name="createdAt" [(ngModel)]="order.createdAt"
@@ -28,8 +27,7 @@
                     This field should be a date and time.
                 </small>
             </div>
-        </div>
-        <div class="form-group">
+
             <label class="form-control-label" jhiTranslate="drzugApp.order.status" for="field_status">Status</label>
             <select class="form-control" name="status" [(ngModel)]="order.status" id="field_status"  required>
                 <option value="CANCELLED">{{'drzugApp.OrderStatus.CANCELLED' | translate}}</option>
@@ -44,6 +42,50 @@
                    This field is required.
                 </small>
             </div>
+        </div>
+        <h3>Reactive form</h3>-->
+        <div class="form-group">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" formControlName="id" placeholder="Id" readonly/>
+
+            <label class="form-control-label" jhiTranslate="drzugApp.order.createdAt" for="field_createdAt">Created At</label>
+            <input type="datetime-local" class="form-control" formControlName="createdAt"/>
+
+            <label class="form-control-label" jhiTranslate="drzugApp.order.status" for="field_status">Status</label>
+            <select formContorlName="status" class="form-control" >
+                <option value="CANCELLED">{{'drzugApp.OrderStatus.CANCELLED' | translate}}</option>
+                <option value="LOCKED">{{'drzugApp.OrderStatus.LOCKED' | translate}}</option>
+                <option value="COMPLETED">{{'drzugApp.OrderStatus.COMPLETED' | translate}}</option>
+                <option value="NEW">{{'drzugApp.OrderStatus.NEW' | translate}}</option>
+                <option value="INQUIRY">{{'drzugApp.OrderStatus.INQUIRY' | translate}}</option>
+                <!--<option *ngFor="let statusType of orderStatus" [value]="statusType"> {{ statusType }}</option>-->
+            </select>
+        </div>
+
+        <div formArrayName="orderItems">
+            <div *ngFor="let orderItem of orderForm.controls.orderItems.controls; let i=index" class="card form-group">
+                <div class="card-header form-control-label">
+                    <span> item {{i+1}} </span>
+                    <span class="fa fa-times pull-right" (click)="removeOrderItem(i)"></span>
+                </div>
+
+                <div class="card-block form-group row" [formGroupName]="i">
+                    <div class="form-group col">
+                        <label class="form-control-label">count</label>
+                        <input type="text" class="form-control" formControlName="count">
+                    </div>
+                    <div class="form-group col">
+                        <label class="form-control-label">Sale price</label>
+                        <input type="text" class="form-control" formControlName="salePrice">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <a (click)="addOrderItem()" style="cursor: default">
+                Add another address +
+            </a>
         </div>
 
     </div>

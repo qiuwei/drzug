@@ -52,10 +52,10 @@ export class OrderItemMysuffixDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.orderItem.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.orderItemService.update(this.orderItem));
+                this.orderItemService.update(1, this.orderItem));
         } else {
             this.subscribeToSaveResponse(
-                this.orderItemService.create(this.orderItem));
+                this.orderItemService.create(1, this.orderItem));
         }
     }
 

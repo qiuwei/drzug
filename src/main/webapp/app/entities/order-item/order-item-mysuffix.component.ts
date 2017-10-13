@@ -50,7 +50,7 @@ currentAccount: any;
     }
 
     loadAll() {
-        this.orderItemService.query({
+        this.orderItemService.query(1, {
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()}).subscribe(
