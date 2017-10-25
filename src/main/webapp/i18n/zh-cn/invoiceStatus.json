@@ -1,9 +1,0 @@
-{
-    "drzugApp": {
-        "InvoiceStatus" : {
-            "null": "",
-            "OPEN": "OPEN",
-            "PAID": "PAID"
-        }
-    }
-}

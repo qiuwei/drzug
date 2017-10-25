@@ -7,21 +7,7 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
-                "customerMysuffix": "Customer",
-                "invoiceMysuffix": "Invoice",
-                "invoiceItemMysuffix": "Invoice Item",
-                "orderMysuffix": "Order",
-                "orderItemMysuffix": "Order Item",
-                "packetMysuffix": "Packet",
-                "packetItemMysuffix": "Packet Item",
-                "paymentMysuffix": "Payment",
-                "productMysuffix": "Product",
-                "providerMysuffix": "Provider",
-                "purchaseMysuffix": "Purchase",
-                "purchaseItemMysuffix": "Purchase Item",
-                "storageMysuffix": "Storage",
-                "taxMysuffix": "Tax",
-                "modules": "Modules",
+                "invoice": "Invoice",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
