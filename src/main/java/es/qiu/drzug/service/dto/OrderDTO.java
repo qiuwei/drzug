@@ -28,6 +28,7 @@ public class OrderDTO implements Serializable {
     @NotNull
     private OrderStatus status;
 
-    //private Set<OrderItemDTO> orderItemDTOs;
+    @NotNull
+    private Set<OrderItemDTO> orderItemDTOs;
 
 }

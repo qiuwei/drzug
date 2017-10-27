@@ -14,11 +14,11 @@ public interface InvoiceMapper extends EntityMapper <InvoiceDTO, Invoice> {
 
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "customer.firstName", target = "customerFirstName")
-    InvoiceDTO toDto(Invoice invoice); 
+    InvoiceDTO toDto(Invoice invoice);
     @Mapping(target = "invoiceItems", ignore = true)
 
     @Mapping(source = "customerId", target = "customer")
-    Invoice toEntity(InvoiceDTO invoiceDTO); 
+    Invoice toEntity(InvoiceDTO invoiceDTO);
     default Invoice fromId(UUID id) {
         if (id == null) {
             return null;

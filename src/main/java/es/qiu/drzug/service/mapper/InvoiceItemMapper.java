@@ -19,14 +19,14 @@ public interface InvoiceItemMapper extends EntityMapper <InvoiceItemDTO, Invoice
 
     @Mapping(source = "tax.id", target = "taxId")
     @Mapping(source = "tax.name", target = "taxName")
-    InvoiceItemDTO toDto(InvoiceItem invoiceItem); 
+    InvoiceItemDTO toDto(InvoiceItem invoiceItem);
 
     @Mapping(source = "invoiceId", target = "invoice")
 
     @Mapping(source = "productId", target = "product")
 
     @Mapping(source = "taxId", target = "tax")
-    InvoiceItem toEntity(InvoiceItemDTO invoiceItemDTO); 
+    InvoiceItem toEntity(InvoiceItemDTO invoiceItemDTO);
     default InvoiceItem fromId(UUID id) {
         if (id == null) {
             return null;

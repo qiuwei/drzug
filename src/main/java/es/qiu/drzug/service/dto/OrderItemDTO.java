@@ -29,6 +29,4 @@ public class OrderItemDTO implements Serializable {
     private String productName;
 
     private UUID orderId;
-
-    private Set<OrderItemDTO> orderItemDTOs;
 }

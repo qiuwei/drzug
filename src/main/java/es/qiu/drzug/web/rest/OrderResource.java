@@ -1,6 +1,7 @@
 package es.qiu.drzug.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import es.qiu.drzug.domain.Order;
 import es.qiu.drzug.service.OrderService;
 import es.qiu.drzug.web.rest.util.HeaderUtil;
 import es.qiu.drzug.web.rest.util.PaginationUtil;

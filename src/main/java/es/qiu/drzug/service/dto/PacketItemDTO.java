@@ -22,4 +22,6 @@ public class PacketItemDTO implements Serializable {
     @NotNull
     private Long count;
 
+    private UUID packetId;
+
 }

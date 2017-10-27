@@ -14,14 +14,12 @@ public interface OrderItemMapper extends EntityMapper <OrderItemDTO, OrderItem> 
 
     @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "product.name", target = "productName")
-
     @Mapping(source = "order.id", target = "orderId")
-    OrderItemDTO toDto(OrderItem orderItem); 
+    OrderItemDTO toDto(OrderItem orderItem);
 
     @Mapping(source = "productId", target = "product")
-
     @Mapping(source = "orderId", target = "order")
-    OrderItem toEntity(OrderItemDTO orderItemDTO); 
+    OrderItem toEntity(OrderItemDTO orderItemDTO);
     default OrderItem fromId(UUID id) {
         if (id == null) {
             return null;
@@ -30,4 +28,5 @@ public interface OrderItemMapper extends EntityMapper <OrderItemDTO, OrderItem> 
         orderItem.setId(id);
         return orderItem;
     }
+
 }
